@@ -25,7 +25,7 @@ async def document_upload(file: UploadFile):
     upload_path = Path("docs/uploads")
     upload_path.mkdir(parents=True, exist_ok=True)
 
-    file_path = upload_path / file.filename
+    file_path = upload_path / Path(file.filename).name
 
     contents = await file.read()
     file_path.write_bytes(contents)

@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from pypdf import PdfReader
 
 def extract_text_from_pdf(file_path):
@@ -12,4 +10,4 @@ def extract_text_from_pdf(file_path):
         if text:
             pages.append(text)
 
-    return "/n".join(pages)
+    return "\n".join(pages)

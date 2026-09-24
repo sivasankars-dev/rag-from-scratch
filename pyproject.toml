@@ -1,0 +1,14 @@
+[project]
+name = "fastapi-rag-poc"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb==1.5.9",
+    "fastapi[standard]>=0.141.1",
+    "onnxruntime==1.22.0",
+    "pypdf>=6.19.0",
+    "python-multipart>=0.0.32",
+    "sentence-transformers==5.2.3",
+    "torch==2.4.1",
+    "transformers==4.47.1",
+]

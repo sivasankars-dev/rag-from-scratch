@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+.DS_Store
+# Generated persistent databases and the preserved pre-cosine database.
+data/chroma/
+data/chroma-backup-*/
+# Files saved by the existing upload endpoint.
+docs/uploads/

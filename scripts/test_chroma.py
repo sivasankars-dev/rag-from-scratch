@@ -1,9 +1,10 @@
+from tempfile import TemporaryDirectory
+
 from app.services.embedding_service import EmbeddingService
 from app.services.vector_store import VectorStore
 
 def main():
     embedding_service = EmbeddingService()
-    vector_store = VectorStore()
 
     chunks = [
         "Employees are entitled to 20 days of annual leave per year.",
@@ -13,13 +14,16 @@ def main():
 
     embed_chunks = embedding_service.embed_texts(chunks)
 
-    vector_store.upsert_chunks(
-        chunks=chunks,
-        embeddings=embed_chunks,
-        source="company_policy.pdf"
-    )
-
-    print("Stored chunks:", len(chunks))
+    # Keep this three-sentence experiment separate from the ingested PDF records.
+    with TemporaryDirectory() as directory:
+        vector_store = VectorStore(persist_directory=directory)
+        vector_store.upsert_chunks(
+            chunks=chunks,
+            embeddings=embed_chunks,
+            source="company_policy.pdf"
+        )
+        assert vector_store.collection.count() == len(chunks)
+        print("Stored chunks:", vector_store.collection.count())
 
 
 if __name__ == "__main__":

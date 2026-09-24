@@ -12,11 +12,17 @@ class VectorStore:
         self.collection = self.client.get_or_create_collection(
             name=collection_name,
             configuration={
-                "hsnw": {
+                "hnsw": {
                     "space": "cosine"
                 }
             }
         )
+
+        if self.collection.configuration["hnsw"]["space"] != "cosine":
+            raise ValueError(
+                "Existing collection does not use cosine distance. "
+                "Preserve the old database and re-ingest into a fresh cosine collection."
+            )
 
     def upsert_chunks(self, chunks, embeddings, source):
         ids = [f"{source}_chunk_{index}" for index in range(len(chunks))]

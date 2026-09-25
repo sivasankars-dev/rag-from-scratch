@@ -1,4 +1,4 @@
-# Current architecture — Level 1, Steps 1–7
+# Current architecture — Level 1, Steps 1–8
 
 The repository contains a small FastAPI app and separate Python ingestion/retrieval scripts. The scripts use the services directly. No framework orchestrates the RAG pipeline.
 
@@ -26,10 +26,30 @@ INGESTION: python -m scripts.ingest_document
                  ↑
  Question: How many annual leave days do I get?
 
-RETRIEVAL: python -m scripts.retrieve
+STEP 7 RETRIEVAL: python -m scripts.retrieve
  Chroma results → ranked documents + metadata + distances
                → terminal output including similarity = 1 - distance
 ```
+
+## Step 8 — Retrieval controls (complete)
+
+Step 7 remains in `app/services/vector_store.py` and `scripts/retrieve.py`. Step 8 uses separate files, `app/services/retrieval_controls_vector_store.py` and `scripts/retrieval_control_retrieve.py`, so both learning stages remain easy to revisit. Both stores use the same persisted cosine collection.
+
+```text
+STEP 8: python -m scripts.retrieval_control_retrieve
+
+Query → query embedding
+      → optional source filter (where, inside Chroma)
+      → Chroma search among eligible chunks
+      → Top-K candidates
+      → distance converted to cosine similarity
+      → similarity threshold
+      → final results or []
+```
+
+The script supplies `top_k=5` and `source="company_policy.pdf"`; the threshold defaults to `0.50`. Source filtering happens inside Chroma before Top-K selection. Threshold filtering happens afterward and preserves candidate order.
+
+The Step 8 store returns a list of dictionaries containing `document`, `metadata`, `distance` and `similarity`. If none pass the current settings it returns `[]`, and the script prints a message. This does not prove that the knowledge base has no answer. See the [Step 8 guide](08-retrieval-controls.md) for the explanation and recorded experiments.
 
 ## Components and their responsibilities
 
@@ -42,7 +62,9 @@ RETRIEVAL: python -m scripts.retrieve
 | `app/services/vector_store.py` | Persist/upsert records and query a verified cosine collection |
 | `scripts/ingest_document.py` | Connect the PDF-to-storage stages |
 | `scripts/inspect_chroma.py` | Print persisted documents and metadata |
-| `scripts/retrieve.py` | Embed the fixed sample question and print two ranked matches |
+| `scripts/retrieve.py` | Step 7: embed the fixed sample question and print two ranked matches |
+| `app/services/retrieval_controls_vector_store.py` | Step 8: query with an optional source filter and apply a similarity threshold |
+| `scripts/retrieval_control_retrieve.py` | Step 8: print accepted results or handle an empty list |
 
 ## The existing HTTP branch
 
@@ -68,4 +90,4 @@ IDs combine source basename and chunk index. Upsert updates those IDs, but does 
 
 Character windows can split words, tables are not reconstructed, and scanned-image PDFs need separate OCR. Search ranks related passages; it does not verify facts or generate answers. The returned source metadata is not an implemented answer-citation feature.
 
-See [Step 7](07-retrieval.md) for measured output and [validation](validation.md) for checks. Step 8 and later capabilities remain unimplemented.
+See [Step 7](07-retrieval.md) and [Step 8](08-retrieval-controls.md) for recorded experiments. The [existing validation notes](validation.md) cover Steps 1–7. Step 8 retrieval controls are complete; Step 9 — Retrieval API is not started.

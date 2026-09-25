@@ -2,7 +2,7 @@
 
 Learn retrieval-augmented generation (RAG) by building its core pieces in Python. This repository starts with explicit parsing, chunking, embeddings and vector search so we can understand what happens internally before learning higher-level frameworks.
 
-**Current milestone: Level 1, Steps 1–7 — ingestion and semantic retrieval.** The system returns relevant chunks; answer generation is not implemented. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
+**Current milestone: Level 1, Steps 1–8 — ingestion, semantic retrieval and retrieval controls.** The system returns retrieved chunks that pass the selected controls; answer generation is not implemented. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
 
 ## Current architecture
 
@@ -11,8 +11,10 @@ PDF → Text Extraction → Character Chunking → Embeddings → ChromaDB
                                                            ↑
 User Query → Query Embedding ───────────────────────────────┘
                                                            ↓
-                                      Semantic Retrieval → Ranked Chunks
+                                      Top-K Candidates → Similarity Threshold → Results or []
 ```
+
+For Step 8, an optional source filter is passed into Chroma using `where` before Top-K candidates are selected. The similarity threshold is applied to the returned candidates. See [Step 8](docs/08-retrieval-controls.md).
 
 Ingestion uses 100-character chunks with 20-character overlap. The sample PDF produces 343 characters and five chunks. `all-MiniLM-L6-v2` produces 384-dimensional vectors; Chroma stores them in the persistent `documents_cosine` collection using cosine distance.
 
@@ -29,7 +31,7 @@ The existing FastAPI app has health and PDF-upload routes. Uploads only extract/
 | 5 | [Cosine Similarity](docs/05-cosine-similarity.md) | Complete |
 | 6 | [ChromaDB](docs/06-chromadb.md) | Complete |
 | 7 | [Semantic Retrieval](docs/07-retrieval.md) | Complete |
-| 8 | Retrieval Controls | Not started |
+| 8 | [Retrieval Controls](docs/08-retrieval-controls.md) | Complete |
 
 Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
 
@@ -72,7 +74,7 @@ python -m uvicorn app.main:app --reload
 
 Open `http://127.0.0.1:8000/health` or the interactive `http://127.0.0.1:8000/docs` page. `POST /documents/upload` accepts a PDF and returns text length and chunks. It saves uploaded files in ignored `docs/uploads/`. Stop the server with Ctrl+C.
 
-Ingest the sample and retrieve from it:
+Ingest the sample and run the original Step 7 retrieval:
 
 ```bash
 python -m scripts.ingest_document
@@ -80,7 +82,7 @@ python -m scripts.inspect_chroma
 python -m scripts.retrieve
 ```
 
-Ingestion creates the ignored `data/chroma/` database. Run it before retrieval. The fixed sample question is **“How many annual leave days do I get?”**. Current results:
+Ingestion creates the ignored `data/chroma/` database. Run it before retrieval. The fixed sample question is **“How many annual leave days do I get?”**. Step 7 results:
 
 | Rank | Chunk index | Cosine distance ↓ | Cosine similarity ↑ |
 | --- | --- | --- | --- |
@@ -88,6 +90,16 @@ Ingestion creates the ignored `data/chroma/` database. Run it before retrieval. 
 | 2 | 2 | 0.323565 | 0.676435 |
 
 Both come from `company_policy.pdf`; the first includes “20 days of annual leave per year.” Distances and similarities are related by `similarity = 1 - distance`. They are not probabilities. See [the measured experiment](docs/07-retrieval.md) for the full chunks and limitations.
+
+Step 8 keeps a separate implementation for learning: `app/services/retrieval_controls_vector_store.py` and `scripts/retrieval_control_retrieve.py`. Step 7 still uses `app/services/vector_store.py` and `scripts/retrieve.py`.
+
+Run Step 8:
+
+```bash
+python -m scripts.retrieval_control_retrieve
+```
+
+It requests `top_k=5`, restricts the source to `company_policy.pdf`, and uses the default similarity threshold of `0.50`. The search method returns a list of accepted passages, or `[]` if none pass the current settings; the script prints the results or a no-results message. An empty result does not prove the knowledge base has no answer. See [Step 8's recorded experiments](docs/08-retrieval-controls.md).
 
 Optional learning experiments:
 
@@ -105,7 +117,7 @@ The Chroma demo now uses temporary storage, so it does not overwrite ingested PD
 python -m unittest discover -s tests -v
 ```
 
-Eight tests cover chunking, PDF extraction, the existing upload route, cosine storage and the complete real-model retrieval path. Tests use standard-library `unittest` and the already-installed FastAPI test client; no test framework was added. After the model is cached, an offline run is available:
+The existing eight tests exercise the Step 7 implementation; they do not cover the separate Step 8 controls. They cover chunking, PDF extraction, the existing upload route, cosine storage and the complete real-model retrieval path. Tests use standard-library `unittest` and the already-installed FastAPI test client; no test framework was added. After the model is cached, an offline run is available:
 
 ```bash
 HF_HUB_OFFLINE=1 python -m unittest discover -s tests -v
@@ -116,11 +128,11 @@ See [validation and small fixes](docs/validation.md). The important correction w
 ## Repository layout
 
 ```text
-app/                 FastAPI app and four small RAG services
+app/                 FastAPI app and small RAG services
 scripts/             Ingestion, inspection, retrieval and learning experiments
 tests/               Focused regression/integration checks
 data/documents/      Sample PDFs (company_policy.pdf is the ingestion input)
-docs/                Steps 1–7, architecture and validation
+docs/                Steps 1–8, architecture and validation
 pyproject.toml       Project metadata and dependency requirements
 uv.lock              Resolved dependency versions
 ```
@@ -131,13 +143,13 @@ uv.lock              Resolved dependency versions
 
 ```text
 LEVEL 1 — RAG Fundamentals
-  Steps 1–7 complete
-  Step 8 — Retrieval Controls: not started
-  Steps 8+ later, only on explicit request
+  Steps 1–8 complete
+  Step 9 — Retrieval API: not started
+  Steps 9+ later, only on explicit request
 
 LEVEL 2 — Practical RAG Engineering
 LEVEL 3 — Advanced RAG
 LEVEL 4 — Production RAG Engineering
 ```
 
-We stop after retrieving ranked chunks. Similarity thresholds, metadata filtering, no-result handling, a retrieval API, LLM generation, `/chat`, answer citations, reranking, hybrid search, query rewriting and agents are not implemented.
+We stop after retrieving and filtering chunks. Step 8 implements Top-K, similarity thresholds, source metadata filtering and empty-result handling. Step 9 and later capabilities remain future work; there is no retrieval API or answer generation.

@@ -2,7 +2,7 @@
 
 Learn retrieval-augmented generation (RAG) by building its core pieces in Python. This repository starts with explicit parsing, chunking, embeddings and vector search so we can understand what happens internally before learning higher-level frameworks.
 
-**Current milestone: Level 1, Steps 1–11 documented.** Retrieval and its API are implemented, alongside standalone LLM generation and console usage/cost estimates. Retrieved chunks are not yet passed to the LLM; Context Building is next. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
+**Current milestone: Level 1, Steps 1–12 documented.** Basic end-to-end RAG now connects retrieval, context building, prompt construction and LLM generation through a Python service. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
 
 ## Current architecture
 
@@ -27,7 +27,7 @@ Manual prompt → LLMService → OpenAI Responses API → generated text
                                                 → usage → cost estimate → console
 ```
 
-The retrieval-to-generation connection is the next implementation step. The [Step 11 notes](docs/11-llm-usage-and-cost-monitoring.md) explain the current estimate limitations and the outdated cost-demo call.
+Step 12 now connects retrieval to generation through `RAGService`; see [RAG Orchestration and Integration](docs/12-rag-orchestration.md). The [Step 11 notes](docs/11-llm-usage-and-cost-monitoring.md) explain the current estimate limitations and the outdated cost-demo call.
 
 ## Current progress and learning notes
 
@@ -44,6 +44,7 @@ The retrieval-to-generation connection is the next implementation step. The [Ste
 | 9 | [Retrieval API](docs/09-retrieval-api.md) | Complete |
 | 10 | [LLM Generation](docs/10-llm-generation.md) | Complete / documented (standalone) |
 | 11 | [LLM Usage & Cost Monitoring](docs/11-llm-usage-and-cost-monitoring.md) | Complete / documented (basic estimate; limitations noted) |
+| 12 | [RAG Orchestration and Integration](docs/12-rag-orchestration.md) | Complete (happy-path integration verified) |
 
 Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
 
@@ -164,7 +165,7 @@ app/                 FastAPI app and small RAG services
 scripts/             Ingestion, inspection, retrieval and learning experiments
 tests/               Focused regression/integration checks
 data/documents/      Sample PDFs (company_policy.pdf is the ingestion input)
-docs/                Steps 1–11, architecture and validation
+docs/                Steps 1–12, architecture and validation
 pyproject.toml       Project metadata and dependency requirements
 uv.lock              Resolved dependency versions
 ```
@@ -178,11 +179,20 @@ LEVEL 1 — RAG Fundamentals
   Steps 1–9 complete
   Step 10 — LLM Generation: complete / documented (standalone)
   Step 11 — LLM Usage & Cost Monitoring: complete / documented (basic estimate)
-  Next: Context Building / passing retrieved context to the LLM
+  Step 12 — Context, Prompt Building & RAG Orchestration: complete
+  Later features remain outside this checkpoint
 
 LEVEL 2 — Practical RAG Engineering
 LEVEL 3 — Advanced RAG
 LEVEL 4 — Production RAG Engineering
 ```
 
-We stop after retrieving and filtering chunks. Step 8 implements Top-K, similarity thresholds, source metadata filtering and empty-result handling. Step 9 exposes that logic through `POST /retrieve` with validated settings and structured JSON. Steps 10–11 add standalone generation and usage/cost reporting. Context Building, passing retrieved chunks into generation, `/chat` and generated-answer sources/citations are not implemented yet.
+The basic answer path now runs through `RAGService`: question → embedding → retrieval controls → context → prompt → LLM → answer. The reported happy-path answer was “You get 20 days of annual leave per year.” This is one successful example, not a guarantee for all questions.
+
+With the sample already ingested and the local environment configured, run the paid integration smoke test:
+
+```bash
+uv run python -m scripts.test_rag_service
+```
+
+Use `TOKENIZERS_PARALLELISM=false` in the ignored local `.env` to explicitly disable tokenizer parallelism. `/chat`, source/citation responses and advanced RAG features remain unimplemented. See [Step 12](docs/12-rag-orchestration.md) for setup, the tokenizer warning and current limitations.

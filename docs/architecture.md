@@ -1,5 +1,7 @@
 # Current architecture — Level 1, Steps 1–9
 
+> This diagram records the Steps 1–9 architecture. For the subsequently completed plain Python answer workflow, see [Step 12 — RAG Orchestration and Integration](12-rag-orchestration.md). The existing HTTP routes remain separate from that workflow.
+
 The repository contains a small FastAPI app and separate Python ingestion/retrieval scripts. The scripts use the services directly. No framework orchestrates the RAG pipeline.
 
 ```text

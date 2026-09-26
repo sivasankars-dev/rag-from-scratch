@@ -33,6 +33,7 @@ The FastAPI app has health, PDF-upload and `POST /retrieve` routes. Uploads only
 | 7 | [Semantic Retrieval](docs/07-retrieval.md) | Complete |
 | 8 | [Retrieval Controls](docs/08-retrieval-controls.md) | Complete |
 | 9 | [Retrieval API](docs/09-retrieval-api.md) | Complete |
+| 10 | [LLM Generation](docs/10-llm-generation.md) | Complete / documented (standalone) |
 
 Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
 
@@ -53,6 +54,7 @@ Versions below were checked against the local environment and `uv.lock`; depende
 | torch | 2.4.1 | Model execution |
 | ChromaDB | 1.5.9 | Persistent vector storage/search |
 | ONNX Runtime | 1.22.0 | Chroma dependency compatibility |
+| OpenAI SDK | 3.19.2 | Standalone Responses API generation |
 
 `pyproject.toml` declares Python `>=3.12`, but this environment was validated with 3.12.3. The macOS ARM compatibility journey is described in [Step 1](docs/01-project-setup.md). LangChain and LangGraph are not used.
 
@@ -65,7 +67,7 @@ uv sync --locked --python 3.12.3
 source .venv/bin/activate
 ```
 
-The existing environment was checked with a sync dry run; it required no changes. First-time setup and the first model load may need network access. The public embedding model downloads to the Hugging Face cache. No API key is required.
+The existing environment was checked with a sync dry run; it required no changes. First-time setup and the first model load may need network access. The public embedding model downloads to the Hugging Face cache. Local embedding/retrieval needs no API key. The separate LLM scripts require `OPENAI_API_KEY` and make paid network calls.
 
 Start FastAPI:
 

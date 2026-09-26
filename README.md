@@ -2,7 +2,7 @@
 
 Learn retrieval-augmented generation (RAG) by building its core pieces in Python. This repository starts with explicit parsing, chunking, embeddings and vector search so we can understand what happens internally before learning higher-level frameworks.
 
-**Current milestone: Level 1, Steps 1–9 — ingestion, semantic retrieval, retrieval controls and a Retrieval API.** The system returns retrieved chunks that pass the selected controls; answer generation is not implemented. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
+**Current milestone: Level 1, Steps 1–11 documented.** Retrieval and its API are implemented, alongside standalone LLM generation and console usage/cost estimates. Retrieved chunks are not yet passed to the LLM; Context Building is next. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
 
 ## Current architecture
 
@@ -20,6 +20,15 @@ Ingestion uses 100-character chunks with 20-character overlap. The sample PDF pr
 
 The FastAPI app has health, PDF-upload and `POST /retrieve` routes. Uploads only extract/chunk text (overlap 10); ingestion runs through a script. Retrieval is available through the API or the existing learning scripts. See the [architecture walkthrough](docs/architecture.md).
 
+Separate generation building block (Steps 10–11):
+
+```text
+Manual prompt → LLMService → OpenAI Responses API → generated text
+                                                → usage → cost estimate → console
+```
+
+The retrieval-to-generation connection is the next implementation step. The [Step 11 notes](docs/11-llm-usage-and-cost-monitoring.md) explain the current estimate limitations and the outdated cost-demo call.
+
 ## Current progress and learning notes
 
 | Step | Topic | Status |
@@ -34,6 +43,7 @@ The FastAPI app has health, PDF-upload and `POST /retrieve` routes. Uploads only
 | 8 | [Retrieval Controls](docs/08-retrieval-controls.md) | Complete |
 | 9 | [Retrieval API](docs/09-retrieval-api.md) | Complete |
 | 10 | [LLM Generation](docs/10-llm-generation.md) | Complete / documented (standalone) |
+| 11 | [LLM Usage & Cost Monitoring](docs/11-llm-usage-and-cost-monitoring.md) | Complete / documented (basic estimate; limitations noted) |
 
 Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
 
@@ -124,6 +134,15 @@ python -m scripts.test_chroma
 
 The Chroma demo now uses temporary storage, so it does not overwrite ingested PDF chunks. Use module syntax (`-m`) to avoid the import problems encountered when running script file paths directly.
 
+For the new standalone generation experiments, configure `OPENAI_API_KEY` in your environment or ignored local `.env` file, then run:
+
+```bash
+python -m scripts.test_llm
+python -m scripts.llm_cache_test
+```
+
+These are manual, paid API experiments, not offline unit tests. See [Step 10](docs/10-llm-generation.md) for setup and scope. No saved live result transcript is available. The separate `scripts/test_cost_calculator.py` currently uses an outdated method signature and fails; the working calculator interface and its limitations are documented in [Step 11](docs/11-llm-usage-and-cost-monitoring.md).
+
 ## Tests and validation
 
 ```bash
@@ -145,7 +164,7 @@ app/                 FastAPI app and small RAG services
 scripts/             Ingestion, inspection, retrieval and learning experiments
 tests/               Focused regression/integration checks
 data/documents/      Sample PDFs (company_policy.pdf is the ingestion input)
-docs/                Steps 1–9, architecture and validation
+docs/                Steps 1–11, architecture and validation
 pyproject.toml       Project metadata and dependency requirements
 uv.lock              Resolved dependency versions
 ```
@@ -157,12 +176,13 @@ uv.lock              Resolved dependency versions
 ```text
 LEVEL 1 — RAG Fundamentals
   Steps 1–9 complete
-  Step 9 — Retrieval API: complete
-  Steps 10+ later, only on explicit request
+  Step 10 — LLM Generation: complete / documented (standalone)
+  Step 11 — LLM Usage & Cost Monitoring: complete / documented (basic estimate)
+  Next: Context Building / passing retrieved context to the LLM
 
 LEVEL 2 — Practical RAG Engineering
 LEVEL 3 — Advanced RAG
 LEVEL 4 — Production RAG Engineering
 ```
 
-We stop after retrieving and filtering chunks. Step 8 implements Top-K, similarity thresholds, source metadata filtering and empty-result handling. Step 9 exposes that logic through `POST /retrieve` with validated settings and structured JSON. Later steps remain future work; answer generation is not implemented.
+We stop after retrieving and filtering chunks. Step 8 implements Top-K, similarity thresholds, source metadata filtering and empty-result handling. Step 9 exposes that logic through `POST /retrieve` with validated settings and structured JSON. Steps 10–11 add standalone generation and usage/cost reporting. Context Building, passing retrieved chunks into generation, `/chat` and generated-answer sources/citations are not implemented yet.

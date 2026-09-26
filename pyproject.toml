@@ -6,6 +6,7 @@ dependencies = [
     "chromadb==1.5.9",
     "fastapi[standard]>=0.141.1",
     "onnxruntime==1.22.0",
+    "openai>=3.19.2",
     "pypdf>=6.19.0",
     "python-multipart>=0.0.32",
     "sentence-transformers==5.2.3",

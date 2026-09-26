@@ -1,4 +1,4 @@
-# Current architecture — Level 1, Steps 1–8
+# Current architecture — Level 1, Steps 1–9
 
 The repository contains a small FastAPI app and separate Python ingestion/retrieval scripts. The scripts use the services directly. No framework orchestrates the RAG pipeline.
 
@@ -51,10 +51,28 @@ The script supplies `top_k=5` and `source="company_policy.pdf"`; the threshold d
 
 The Step 8 store returns a list of dictionaries containing `document`, `metadata`, `distance` and `similarity`. If none pass the current settings it returns `[]`, and the script prints a message. This does not prove that the knowledge base has no answer. See the [Step 8 guide](08-retrieval-controls.md) for the explanation and recorded experiments.
 
+## Step 9 — Retrieval API (complete)
+
+```text
+HTTP client → POST /retrieve → Pydantic request validation
+    → strip query/source → EmbeddingService
+    → Step 8 VectorStore → Chroma source filter and Top-K search
+    → similarity threshold → retrieved chunks → JSON response
+```
+
+The route lives in `app/main.py`. `app/schemas/retrieval.py` defines request/result/response models, and `app/dependencies.py` supplies the embedding service and Step 8 vector store. The earlier learning implementations remain separate.
+
+Top-K defaults to `5` and must be 1–20. The threshold defaults to `0.5` and must be 0–1. Bounds are inclusive; invalid ranges and non-finite thresholds produce HTTP 422 when dependencies initialize successfully. The threshold bounds are API policy: cosine similarity itself can be negative. Direct Step 8 calls do not use this request schema.
+
+The endpoint returns the trimmed query and a list of result dictionaries, or an empty list with HTTP 200. A blank query is rejected with HTTP 400. The API returns chunks, not an LLM answer. See [Step 9](09-retrieval-api.md) for the full walkthrough and verified checks.
+
 ## Components and their responsibilities
 
 | Component | Responsibility |
 | --- | --- |
+| `app/main.py` | Health, upload and retrieval HTTP routes |
+| `app/dependencies.py` | Construct embedding and Step 8 vector-store services for requests |
+| `app/schemas/retrieval.py` | API request bounds and response structure |
 | `app/services/document_loader.py` | Extract page text and join it with newlines |
 | `app/services/chunker.py` | Slide overlapping character windows; trim outer whitespace |
 | `app/services/embedding_service.py` | Load Sentence Transformer and encode strings |
@@ -76,7 +94,7 @@ POST /documents/upload → docs/uploads/<basename>.pdf
                       → JSON: filename, text_length, chunk_count, chunks
 ```
 
-This upload branch does not call the embedding service or vector store. Its sample result has four chunks because its overlap differs from the ingestion script. FastAPI's generated `/docs` interface can exercise it. There is no retrieval HTTP endpoint.
+This upload branch does not call the embedding service or vector store. Its sample result has four chunks because its overlap differs from the ingestion script. FastAPI's generated `/docs` interface can exercise it. `POST /retrieve` is a separate route described above; it queries the already-ingested collection.
 
 ## Data lifecycle and boundaries
 
@@ -90,4 +108,4 @@ IDs combine source basename and chunk index. Upsert updates those IDs, but does 
 
 Character windows can split words, tables are not reconstructed, and scanned-image PDFs need separate OCR. Search ranks related passages; it does not verify facts or generate answers. The returned source metadata is not an implemented answer-citation feature.
 
-See [Step 7](07-retrieval.md) and [Step 8](08-retrieval-controls.md) for recorded experiments. The [existing validation notes](validation.md) cover Steps 1–7. Step 8 retrieval controls are complete; Step 9 — Retrieval API is not started.
+See [Step 7](07-retrieval.md) and [Step 8](08-retrieval-controls.md) for recorded experiments. The [existing validation notes](validation.md) cover Steps 1–7. Steps 8 and 9 are complete. See [Step 9](09-retrieval-api.md) for API checks and validation fixes. The API still constructs services per request and calls synchronous embedding/search code inside its async route; no application-wide model cache or asynchronous retrieval has been added.

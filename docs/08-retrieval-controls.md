@@ -763,6 +763,6 @@ The current system still stops at retrieval. It does not yet:
 * implement query rewriting
 * implement retrieval evaluation
 
-**Next: Step 9 — Retrieval API.**
+**Next learning chapter: [Step 9 — Retrieval API](09-retrieval-api.md).**
 
-The next step is to expose the retrieval functionality through FastAPI so that a client can send a question to an HTTP endpoint and receive the filtered retrieved passages.
+At the end of Step 8, exposing retrieval through HTTP was the next task. It is now implemented in Step 9. The scope and examples above describe Step 8 itself; see the linked chapter for the current API and its request validation.

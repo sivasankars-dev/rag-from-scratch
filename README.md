@@ -2,7 +2,7 @@
 
 Learn retrieval-augmented generation (RAG) by building its core pieces in Python. This repository starts with explicit parsing, chunking, embeddings and vector search so we can understand what happens internally before learning higher-level frameworks.
 
-**Current milestone: Level 1, Steps 1–8 — ingestion, semantic retrieval and retrieval controls.** The system returns retrieved chunks that pass the selected controls; answer generation is not implemented. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
+**Current milestone: Level 1, Steps 1–9 — ingestion, semantic retrieval, retrieval controls and a Retrieval API.** The system returns retrieved chunks that pass the selected controls; answer generation is not implemented. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
 
 ## Current architecture
 
@@ -18,7 +18,7 @@ For Step 8, an optional source filter is passed into Chroma using `where` before
 
 Ingestion uses 100-character chunks with 20-character overlap. The sample PDF produces 343 characters and five chunks. `all-MiniLM-L6-v2` produces 384-dimensional vectors; Chroma stores them in the persistent `documents_cosine` collection using cosine distance.
 
-The existing FastAPI app has health and PDF-upload routes. Uploads only extract/chunk text (overlap 10); ingestion and retrieval currently run through scripts. See the [architecture walkthrough](docs/architecture.md).
+The FastAPI app has health, PDF-upload and `POST /retrieve` routes. Uploads only extract/chunk text (overlap 10); ingestion runs through a script. Retrieval is available through the API or the existing learning scripts. See the [architecture walkthrough](docs/architecture.md).
 
 ## Current progress and learning notes
 
@@ -32,6 +32,7 @@ The existing FastAPI app has health and PDF-upload routes. Uploads only extract/
 | 6 | [ChromaDB](docs/06-chromadb.md) | Complete |
 | 7 | [Semantic Retrieval](docs/07-retrieval.md) | Complete |
 | 8 | [Retrieval Controls](docs/08-retrieval-controls.md) | Complete |
+| 9 | [Retrieval API](docs/09-retrieval-api.md) | Complete |
 
 Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
 
@@ -101,6 +102,16 @@ python -m scripts.retrieval_control_retrieve
 
 It requests `top_k=5`, restricts the source to `company_policy.pdf`, and uses the default similarity threshold of `0.50`. The search method returns a list of accepted passages, or `[]` if none pass the current settings; the script prints the results or a no-results message. An empty result does not prove the knowledge base has no answer. See [Step 8's recorded experiments](docs/08-retrieval-controls.md).
 
+Step 9 exposes the Step 8 logic through `POST /retrieve`. After ingestion, start FastAPI as above and use **POST /retrieve → Try it out** at `/docs`, or send:
+
+```bash
+curl -X POST http://127.0.0.1:8000/retrieve \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"How many annual leave days do I get?","top_k":5,"source":"company_policy.pdf","similarity_threshold":0.5}'
+```
+
+The API accepts Top-K from **1 to 20** and thresholds from **0 to 1**, inclusive. Defaults are `5` and `0.5`; source is optional. Invalid ranges and non-finite thresholds return HTTP **422** when dependencies initialize successfully. Blank queries return **400**. A completed search returns **200** with the trimmed query and `results`, which may be empty. This returns passages, not an LLM answer. See [Step 9](docs/09-retrieval-api.md) for schemas, examples and known limitations.
+
 Optional learning experiments:
 
 ```bash
@@ -117,7 +128,7 @@ The Chroma demo now uses temporary storage, so it does not overwrite ingested PD
 python -m unittest discover -s tests -v
 ```
 
-The existing eight tests exercise the Step 7 implementation; they do not cover the separate Step 8 controls. They cover chunking, PDF extraction, the existing upload route, cosine storage and the complete real-model retrieval path. Tests use standard-library `unittest` and the already-installed FastAPI test client; no test framework was added. After the model is cached, an offline run is available:
+The existing eight tests exercise the Step 7 implementation; they do not cover the separate Step 8 controls or `/retrieve`. Temporary review checks of Step 8 and the API, including the validation fixes, passed; these are documented in [Step 9](docs/09-retrieval-api.md). They cover chunking, PDF extraction, the existing upload route, cosine storage and the complete real-model retrieval path. Tests use standard-library `unittest` and the already-installed FastAPI test client; no test framework was added. After the model is cached, an offline run is available:
 
 ```bash
 HF_HUB_OFFLINE=1 python -m unittest discover -s tests -v
@@ -132,7 +143,7 @@ app/                 FastAPI app and small RAG services
 scripts/             Ingestion, inspection, retrieval and learning experiments
 tests/               Focused regression/integration checks
 data/documents/      Sample PDFs (company_policy.pdf is the ingestion input)
-docs/                Steps 1–8, architecture and validation
+docs/                Steps 1–9, architecture and validation
 pyproject.toml       Project metadata and dependency requirements
 uv.lock              Resolved dependency versions
 ```
@@ -143,13 +154,13 @@ uv.lock              Resolved dependency versions
 
 ```text
 LEVEL 1 — RAG Fundamentals
-  Steps 1–8 complete
-  Step 9 — Retrieval API: not started
-  Steps 9+ later, only on explicit request
+  Steps 1–9 complete
+  Step 9 — Retrieval API: complete
+  Steps 10+ later, only on explicit request
 
 LEVEL 2 — Practical RAG Engineering
 LEVEL 3 — Advanced RAG
 LEVEL 4 — Production RAG Engineering
 ```
 
-We stop after retrieving and filtering chunks. Step 8 implements Top-K, similarity thresholds, source metadata filtering and empty-result handling. Step 9 and later capabilities remain future work; there is no retrieval API or answer generation.
+We stop after retrieving and filtering chunks. Step 8 implements Top-K, similarity thresholds, source metadata filtering and empty-result handling. Step 9 exposes that logic through `POST /retrieve` with validated settings and structured JSON. Later steps remain future work; answer generation is not implemented.

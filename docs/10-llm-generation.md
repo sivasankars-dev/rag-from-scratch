@@ -1,5 +1,7 @@
 # Step 10 — LLM Generation
 
+> This chapter records its original learning checkpoint. The retrieval-to-generation connection described here as future work is now implemented in [Step 12 — RAG Orchestration and Integration](12-rag-orchestration.md). `/chat` and source/citation responses remain unimplemented.
+
 ## What are we learning, and why?
 
 Steps 1–9 let us retrieve document chunks. Retrieval answers “Which passages look related to this question?” It does not compose a readable answer from those passages.

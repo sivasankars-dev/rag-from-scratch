@@ -1,5 +1,7 @@
 # Step 11 — LLM Usage & Cost Monitoring
 
+> This chapter records its original learning checkpoint. The retrieval-to-generation connection described here as future work is now implemented in [Step 12 — RAG Orchestration and Integration](12-rag-orchestration.md). `/chat` and source/citation responses remain unimplemented.
+
 ## What are we learning, and why?
 
 A generated answer has a resource cost. Tokens are the pieces of text processed by the model; they are not the same as words or Python characters. Longer input and output generally mean more billable work.

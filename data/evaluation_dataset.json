@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the name of the policy?",
+    "expected_answer": "Company Leave Policy",
+    "expected_source": "company_policy.pdf",
+    "expected_chunk": 0
+  },
+  {
+    "question": "How many annual leave days are employees entitled to per year?",
+    "expected_answer": "20 days",
+    "expected_source": "company_policy.pdf",
+    "expected_chunk": 0
+  },
+  {
+    "question": "How many unused annual leave days can employees carry forward?",
+    "expected_answer": "10 days",
+    "expected_source": "company_policy.pdf",
+    "expected_chunk": 1
+  },
+  {
+    "question": "How many sick leave days are employees entitled to per year?",
+    "expected_answer": "12 days",
+    "expected_source": "company_policy.pdf",
+    "expected_chunk": 2
+  },
+  {
+    "question": "Who can apply for parental leave?",
+    "expected_answer": "Eligible employees can apply for parental leave.",
+    "expected_source": "company_policy.pdf",
+    "expected_chunk": 3
+  }
+]

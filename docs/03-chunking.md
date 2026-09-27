@@ -38,7 +38,7 @@ Small chunks can focus on a fact but lose qualifiers and context. Large chunks p
 
 ## Character-based vs token-based chunking
 
-Characters are Python string units; tokens are pieces chosen by a model tokenizer, sometimes whole words and sometimes word fragments. Their counts are not interchangeable. Our application chunks characters first. The embedding model later tokenizes each chunk internally. Production chunkers may count model tokens or use sentence/semantic boundaries, but neither is implemented here.
+Characters are Python string units; tokens are pieces chosen by a model tokenizer, sometimes whole words and sometimes word fragments. Their counts are not interchangeable. Our application chunks characters first. The embedding model later tokenizes each chunk internally. Production chunkers may count model tokens or use sentence/semantic boundaries, but those approaches are outside Step 3. [Step 13 — Better Chunking](13-better-chunking.md) now adds a separate sentence-based implementation. The ingestion script and upload route still use this Step 3 chunker.
 
 ## Common mistakes and the bug I encountered
 

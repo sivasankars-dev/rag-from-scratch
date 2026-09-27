@@ -247,3 +247,7 @@ The real `OPENAI_API_KEY` belongs in the local environment, not in documentation
 The basic RAG chain now connects retrieval to generation explicitly. `RAGService` coordinates the work without taking over each component's responsibility.
 
 Step 12 is complete as a basic integration checkpoint. The limitations above remain visible and intentional for this stage; no later feature was implemented during documentation.
+
+## Next step
+
+Continue with [Step 13 — Better Chunking](13-better-chunking.md) to learn sentence grouping and sentence overlap. Its separate `BetterChunker` class is implemented and tested; the ingestion script and upload route still use Step 3's character chunker. The workflow described above therefore remains accurate.

@@ -2,6 +2,8 @@
 
 > This diagram records the Steps 1–9 architecture. For the subsequently completed plain Python answer workflow, see [Step 12 — RAG Orchestration and Integration](12-rag-orchestration.md). The existing HTTP routes remain separate from that workflow.
 
+[Step 13 — Better Chunking](13-better-chunking.md) adds a separate `BetterChunker` class: text → sentences → chunk strings. It is tested independently; ingestion and upload still use Step 3, so the diagrams below retain their existing chunking behavior.
+
 The repository contains a small FastAPI app and separate Python ingestion/retrieval scripts. The scripts use the services directly. No framework orchestrates the RAG pipeline.
 
 ```text

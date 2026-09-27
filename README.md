@@ -2,7 +2,7 @@
 
 Learn retrieval-augmented generation (RAG) by building its core pieces in Python. This repository starts with explicit parsing, chunking, embeddings and vector search so we can understand what happens internally before learning higher-level frameworks.
 
-**Current milestone: Level 1, Steps 1–12 documented.** Basic end-to-end RAG now connects retrieval, context building, prompt construction and LLM generation through a Python service. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
+**Current milestone: Level 1, Steps 1–13 documented.** Basic end-to-end RAG now connects retrieval, context building, prompt construction and LLM generation through a Python service. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
 
 ## Current architecture
 
@@ -29,6 +29,8 @@ Manual prompt → LLMService → OpenAI Responses API → generated text
 
 Step 12 now connects retrieval to generation through `RAGService`; see [RAG Orchestration and Integration](docs/12-rag-orchestration.md). The [Step 11 notes](docs/11-llm-usage-and-cost-monitoring.md) explain the current estimate limitations and the outdated cost-demo call.
 
+[Step 13 — Better Chunking](docs/13-better-chunking.md) adds a separate sentence-based chunker and 11 tests. Ingestion and upload still use Step 3; the new class has not been connected to those paths.
+
 ## Current progress and learning notes
 
 | Step | Topic | Status |
@@ -45,6 +47,7 @@ Step 12 now connects retrieval to generation through `RAGService`; see [RAG Orch
 | 10 | [LLM Generation](docs/10-llm-generation.md) | Complete / documented (standalone) |
 | 11 | [LLM Usage & Cost Monitoring](docs/11-llm-usage-and-cost-monitoring.md) | Complete / documented (basic estimate; limitations noted) |
 | 12 | [RAG Orchestration and Integration](docs/12-rag-orchestration.md) | Complete (happy-path integration verified) |
+| 13 | [Better Chunking](docs/13-better-chunking.md) | Complete (separate implementation and tests) |
 
 Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
 
@@ -147,13 +150,15 @@ These are manual, paid API experiments, not offline unit tests. See [Step 10](do
 ## Tests and validation
 
 ```bash
-python -m unittest discover -s tests -v
+uv run python -m pytest
 ```
 
-The existing eight tests exercise the Step 7 implementation; they do not cover the separate Step 8 controls or `/retrieve`. Temporary review checks of Step 8 and the API, including the validation fixes, passed; these are documented in [Step 9](docs/09-retrieval-api.md). They cover chunking, PDF extraction, the existing upload route, cosine storage and the complete real-model retrieval path. Tests use standard-library `unittest` and the already-installed FastAPI test client; no test framework was added. After the model is cached, an offline run is available:
+The current suite has **19 passing tests**: 11 for Step 13 and eight for the earlier chunker, PDF extraction/upload, cosine storage and real-model retrieval path. Tests use `unittest` assertions and run through pytest, which is included in the development dependency group. One Starlette/AnyIO dependency deprecation warning remains; it does not fail the suite.
+
+There are no dedicated automated tests for the separate Step 8 controls, `/retrieve`, or Step 12 orchestration. The temporary API review checks are recorded in [Step 9](docs/09-retrieval-api.md). After the embedding model is cached, the suite can also run offline:
 
 ```bash
-HF_HUB_OFFLINE=1 python -m unittest discover -s tests -v
+HF_HUB_OFFLINE=1 uv run python -m pytest
 ```
 
 See [validation and small fixes](docs/validation.md). The important correction was `hsnw` → `hnsw`: the old collection used L2 despite its name. The old local database was preserved in ignored `data/chroma-backup-before-cosine/`, and the current cosine database was rebuilt from the PDF. Fresh clones need only run ingestion.
@@ -165,7 +170,7 @@ app/                 FastAPI app and small RAG services
 scripts/             Ingestion, inspection, retrieval and learning experiments
 tests/               Focused regression/integration checks
 data/documents/      Sample PDFs (company_policy.pdf is the ingestion input)
-docs/                Steps 1–12, architecture and validation
+docs/                Steps 1–13, architecture and validation
 pyproject.toml       Project metadata and dependency requirements
 uv.lock              Resolved dependency versions
 ```
@@ -180,6 +185,8 @@ LEVEL 1 — RAG Fundamentals
   Step 10 — LLM Generation: complete / documented (standalone)
   Step 11 — LLM Usage & Cost Monitoring: complete / documented (basic estimate)
   Step 12 — Context, Prompt Building & RAG Orchestration: complete
+  Step 13 — Better Chunking: complete (separate implementation and tests)
+  Step 14 — RAG Evaluation: next
   Later features remain outside this checkpoint
 
 LEVEL 2 — Practical RAG Engineering

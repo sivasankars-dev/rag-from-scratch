@@ -64,3 +64,15 @@ The first commit captures the user's existing Step 1–7 code and setup document
 ## Scope boundary
 
 The only application routes are the original health and PDF-upload routes (plus FastAPI's generated documentation). The fixed `top_k=2` search already existed. No Step 8 retrieval controls or later features were added. The collection metric check is a Step 6 correctness guard, not a similarity threshold or no-result policy.
+
+## Step 13 validation — 2026-09-27
+
+[Step 13 — Better Chunking](13-better-chunking.md) adds 11 automated tests for sentence splitting, grouping, overlap, size checks and oversized sentences. The current full suite includes the eight earlier tests recorded above:
+
+```bash
+uv run python -m pytest
+```
+
+Result: **19 passed, 1 warning**. The current warning comes from Starlette's test client using AnyIO's deprecated `BlockingPortal` alias. It is a dependency warning; the Step 13 tests pass. pytest is now in the development dependency group.
+
+The Step 13 class is tested separately. Existing ingestion and upload still use Step 3, and this validation does not establish an improvement in retrieval or generated-answer quality. The earlier sections retain their original checkpoint results.

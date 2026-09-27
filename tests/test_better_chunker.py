@@ -157,7 +157,7 @@ class BetterChunkTest(unittest.TestCase):
             ],
         )
 
-    def test_sample_test(self):
+    def test_overlap_should_not_exceed_max_chunk_size(self):
         chunker = BetterChunker()
 
         sentences = [

@@ -435,15 +435,15 @@ We keep both implementations so we can revisit each learning step. They are not 
 
 | Step | Vector store | Retrieval script | Search return value |
 | --- | --- | --- | --- |
-| 7 | `app/services/vector_store.py` | `scripts/retrieve.py` | Chroma's nested result dictionary |
-| 8 | `app/services/retrieval_controls_vector_store.py` | `scripts/retrieval_control_retrieve.py` | A list of filtered result dictionaries, or `[]` |
+| 7 | `app/services/vector_store.py` | `scripts/run_retrieve.py` | Chroma's nested result dictionary |
+| 8 | `app/services/retrieval_controls_vector_store.py` | `scripts/run_retrieval_control_retrieve.py` | A list of filtered result dictionaries, or `[]` |
 
 Both modules define a class named `VectorStore`. In this document, `VectorStore.search()` refers to the **Step 8** class.
 
 Step 7 requests candidates and formats Chroma's raw response in the script. It does not apply a similarity threshold. Step 8 adds source and threshold controls in its separate vector store, so its caller can consume a simpler result list.
 
 ```text
-scripts/retrieval_control_retrieve.py
+scripts/run_retrieval_control_retrieve.py
     ↓
 Step 8 VectorStore.search()
     ↓
@@ -457,13 +457,13 @@ Distance → cosine similarity → similarity threshold
     ↓
 Final result list or []
     ↓
-scripts/retrieval_control_retrieve.py displays results or a message
+scripts/run_retrieval_control_retrieve.py displays results or a message
 ```
 
 Run Step 8 from the repository root after ingesting the sample:
 
 ```bash
-.venv/bin/python -m scripts.retrieval_control_retrieve
+.venv/bin/python -m scripts.run_retrieval_control_retrieve
 ```
 
 The script uses `top_k=5`, `source="company_policy.pdf"`, and the search method's default `similarity_threshold=0.50`. The method itself defaults to `top_k=2` when the caller does not supply it.
@@ -655,7 +655,7 @@ This chunking problem will be addressed later as a separate retrieval-quality to
 
 # Validation
 
-The retrieval controls were manually checked using the Step 8 implementation and `scripts/retrieval_control_retrieve.py`. These experiments are not an automated retrieval-quality assessment. The existing automated tests still exercise the Step 7 vector store, not the new Step 8 class.
+The retrieval controls were manually checked using the Step 8 implementation and `scripts/run_retrieval_control_retrieve.py`. These experiments are not an automated retrieval-quality assessment. The existing automated tests still exercise the Step 7 vector store, not the new Step 8 class.
 
 Tests included:
 

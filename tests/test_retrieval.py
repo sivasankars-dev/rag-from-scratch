@@ -8,8 +8,7 @@ from app.services.chunker import chunk_text
 from app.services.document_loader import extract_text_from_pdf
 from app.services.embedding_service import EmbeddingService
 from app.services.vector_store import VectorStore
-from scripts.test_similarity import cosine_similarity
-
+from scripts.run_similarity_demo import cosine_similarity
 
 class RetrievalTests(unittest.TestCase):
     def test_pdf_to_ranked_chunks(self):

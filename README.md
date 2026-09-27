@@ -91,9 +91,9 @@ Open `http://127.0.0.1:8000/health` or the interactive `http://127.0.0.1:8000/do
 Ingest the sample and run the original Step 7 retrieval:
 
 ```bash
-python -m scripts.ingest_document
-python -m scripts.inspect_chroma
-python -m scripts.retrieve
+python -m scripts.run_ingest_document
+python -m scripts.run_inspect_chroma
+python -m scripts.run_retrieve
 ```
 
 Ingestion creates the ignored `data/chroma/` database. Run it before retrieval. The fixed sample question is **“How many annual leave days do I get?”**. Step 7 results:
@@ -105,12 +105,12 @@ Ingestion creates the ignored `data/chroma/` database. Run it before retrieval. 
 
 Both come from `company_policy.pdf`; the first includes “20 days of annual leave per year.” Distances and similarities are related by `similarity = 1 - distance`. They are not probabilities. See [the measured experiment](docs/07-retrieval.md) for the full chunks and limitations.
 
-Step 8 keeps a separate implementation for learning: `app/services/retrieval_controls_vector_store.py` and `scripts/retrieval_control_retrieve.py`. Step 7 still uses `app/services/vector_store.py` and `scripts/retrieve.py`.
+Step 8 keeps a separate implementation for learning: `app/services/retrieval_controls_vector_store.py` and `scripts/run_retrieval_control_retrieve.py`. Step 7 still uses `app/services/vector_store.py` and `scripts/run_retrieve.py`.
 
 Run Step 8:
 
 ```bash
-python -m scripts.retrieval_control_retrieve
+python -m scripts.run_retrieval_control_retrieve
 ```
 
 It requests `top_k=5`, restricts the source to `company_policy.pdf`, and uses the default similarity threshold of `0.50`. The search method returns a list of accepted passages, or `[]` if none pass the current settings; the script prints the results or a no-results message. An empty result does not prove the knowledge base has no answer. See [Step 8's recorded experiments](docs/08-retrieval-controls.md).
@@ -128,9 +128,9 @@ The API accepts Top-K from **1 to 20** and thresholds from **0 to 1**, inclusive
 Optional learning experiments:
 
 ```bash
-python -m scripts.test_embedding
-python -m scripts.test_similarity
-python -m scripts.test_chroma
+python -m scripts.run_embedding_demo
+python -m scripts.run_similarity_demo
+python -m scripts.run_chroma_demo
 ```
 
 The Chroma demo now uses temporary storage, so it does not overwrite ingested PDF chunks. Use module syntax (`-m`) to avoid the import problems encountered when running script file paths directly.
@@ -138,11 +138,11 @@ The Chroma demo now uses temporary storage, so it does not overwrite ingested PD
 For the new standalone generation experiments, configure `OPENAI_API_KEY` in your environment or ignored local `.env` file, then run:
 
 ```bash
-python -m scripts.test_llm
-python -m scripts.llm_cache_test
+python -m scripts.run_llm_demo
+python -m scripts.run_llm_cache_test
 ```
 
-These are manual, paid API experiments, not offline unit tests. See [Step 10](docs/10-llm-generation.md) for setup and scope. No saved live result transcript is available. The separate `scripts/test_cost_calculator.py` currently uses an outdated method signature and fails; the working calculator interface and its limitations are documented in [Step 11](docs/11-llm-usage-and-cost-monitoring.md).
+These are manual, paid API experiments, not offline unit tests. See [Step 10](docs/10-llm-generation.md) for setup and scope. No saved live result transcript is available. The separate `scripts/run_cost_calculator_build_demo.py` currently uses an outdated method signature and fails; the working calculator interface and its limitations are documented in [Step 11](docs/11-llm-usage-and-cost-monitoring.md).
 
 ## Tests and validation
 
@@ -192,7 +192,7 @@ The basic answer path now runs through `RAGService`: question → embedding → 
 With the sample already ingested and the local environment configured, run the paid integration smoke test:
 
 ```bash
-uv run python -m scripts.test_rag_service
+uv run python -m scripts.run_rag_service_demo
 ```
 
 Use `TOKENIZERS_PARALLELISM=false` in the ignored local `.env` to explicitly disable tokenizer parallelism. `/chat`, source/citation responses and advanced RAG features remain unimplemented. See [Step 12](docs/12-rag-orchestration.md) for setup, the tokenizer warning and current limitations.

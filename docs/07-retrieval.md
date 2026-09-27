@@ -28,7 +28,7 @@ Stored embeddings avoid re-encoding every document for each question. Chroma's i
 
 ## Current implementation walkthrough
 
-[`scripts/retrieve.py`](../scripts/retrieve.py) creates `EmbeddingService` and `VectorStore`, prints the collection count, embeds `How many annual leave days do I get?`, and calls `search(query_embedding, top_k=2)`.
+[`scripts/run_retrieve.py`](../scripts/run_retrieve.py) creates `EmbeddingService` and `VectorStore`, prints the collection count, embeds `How many annual leave days do I get?`, and calls `search(query_embedding, top_k=2)`.
 
 [`VectorStore.search`](../app/services/vector_store.py) passes `query_embeddings=[query_embedding]` and `n_results=top_k` to Chroma. `include` requests documents, metadata and distances; IDs are also returned by Chroma. The outer lists correspond to queries. Because there is one query, the script takes `[0]`, zips the parallel result lists, and prints each rank starting at 1.
 
@@ -39,9 +39,9 @@ Stored embeddings avoid re-encoding every document for each question. Chroma's i
 Verified locally on 2026-09-24 using Python 3.12.3 on macOS arm64, the existing pinned packages, the cached `all-MiniLM-L6-v2` model and a fresh cosine collection rebuilt from the sample PDF:
 
 ```bash
-.venv/bin/python -m scripts.ingest_document
-.venv/bin/python -m scripts.inspect_chroma
-.venv/bin/python -m scripts.retrieve
+.venv/bin/python -m scripts.run_ingest_document
+.venv/bin/python -m scripts.run_inspect_chroma
+.venv/bin/python -m scripts.run_retrieve
 ```
 
 Ingestion: **343 characters → 5 chunks → 384 dimensions per vector**.

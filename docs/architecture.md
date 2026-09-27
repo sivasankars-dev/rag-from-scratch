@@ -5,7 +5,7 @@
 The repository contains a small FastAPI app and separate Python ingestion/retrieval scripts. The scripts use the services directly. No framework orchestrates the RAG pipeline.
 
 ```text
-INGESTION: python -m scripts.ingest_document
+INGESTION: python -m scripts.run_ingest_document
 
  data/documents/company_policy.pdf
                  ↓
@@ -28,17 +28,17 @@ INGESTION: python -m scripts.ingest_document
                  ↑
  Question: How many annual leave days do I get?
 
-STEP 7 RETRIEVAL: python -m scripts.retrieve
+STEP 7 RETRIEVAL: python -m scripts.run_retrieve
  Chroma results → ranked documents + metadata + distances
                → terminal output including similarity = 1 - distance
 ```
 
 ## Step 8 — Retrieval controls (complete)
 
-Step 7 remains in `app/services/vector_store.py` and `scripts/retrieve.py`. Step 8 uses separate files, `app/services/retrieval_controls_vector_store.py` and `scripts/retrieval_control_retrieve.py`, so both learning stages remain easy to revisit. Both stores use the same persisted cosine collection.
+Step 7 remains in `app/services/vector_store.py` and `scripts/run_retrieve.py`. Step 8 uses separate files, `app/services/retrieval_controls_vector_store.py` and `scripts/run_retrieval_control_retrieve.py`, so both learning stages remain easy to revisit. Both stores use the same persisted cosine collection.
 
 ```text
-STEP 8: python -m scripts.retrieval_control_retrieve
+STEP 8: python -m scripts.run_retrieval_control_retrieve
 
 Query → query embedding
       → optional source filter (where, inside Chroma)
@@ -78,13 +78,13 @@ The endpoint returns the trimmed query and a list of result dictionaries, or an 
 | `app/services/document_loader.py` | Extract page text and join it with newlines |
 | `app/services/chunker.py` | Slide overlapping character windows; trim outer whitespace |
 | `app/services/embedding_service.py` | Load Sentence Transformer and encode strings |
-| `scripts/test_similarity.py` | Demonstrate the cosine formula independently |
+| `scripts/run_similarity_demo.py` | Demonstrate the cosine formula independently |
 | `app/services/vector_store.py` | Persist/upsert records and query a verified cosine collection |
-| `scripts/ingest_document.py` | Connect the PDF-to-storage stages |
-| `scripts/inspect_chroma.py` | Print persisted documents and metadata |
-| `scripts/retrieve.py` | Step 7: embed the fixed sample question and print two ranked matches |
+| `scripts/run_ingest_document.py` | Connect the PDF-to-storage stages |
+| `scripts/run_inspect_chroma.py` | Print persisted documents and metadata |
+| `scripts/run_retrieve.py` | Step 7: embed the fixed sample question and print two ranked matches |
 | `app/services/retrieval_controls_vector_store.py` | Step 8: query with an optional source filter and apply a similarity threshold |
-| `scripts/retrieval_control_retrieve.py` | Step 8: print accepted results or handle an empty list |
+| `scripts/run_retrieval_control_retrieve.py` | Step 8: print accepted results or handle an empty list |
 
 ## The existing HTTP branch
 

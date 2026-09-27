@@ -61,14 +61,14 @@ The source originally used `"hsnw"`. Inspection of the actual installed Chroma c
 
 We corrected the key to `"hnsw"`, preserved the old local database as `data/chroma-backup-before-cosine/`, and re-ingested into a fresh `data/chroma/` database. Both directories are ignored. No original database was deleted. Fresh clones simply run ingestion; they do not need the backup. If restoring an old database, inspect its metric before interpreting its scores.
 
-The original `scripts/test_chroma.py` wrote three demonstration sentences with the same source/IDs as real ingestion, overwriting some PDF chunks. It now uses a temporary directory, so the example cannot contaminate the five-chunk collection.
+The original `scripts/run_chroma_demo.py` wrote three demonstration sentences with the same source/IDs as real ingestion, overwriting some PDF chunks. It now uses a temporary directory, so the example cannot contaminate the five-chunk collection.
 
 ## How to run and verify
 
 ```bash
-.venv/bin/python -m scripts.ingest_document
-.venv/bin/python -m scripts.inspect_chroma
-.venv/bin/python -m scripts.test_chroma
+.venv/bin/python -m scripts.run_ingest_document
+.venv/bin/python -m scripts.run_inspect_chroma
+.venv/bin/python -m scripts.run_chroma_demo
 .venv/bin/python -m unittest discover -s tests -p test_vector_store.py -v
 ```
 

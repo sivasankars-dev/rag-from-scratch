@@ -35,10 +35,10 @@ Cosine similarity = 4 / (sqrt(5) × sqrt(5)) = 0.8
 
 ## Existing implementation and internal steps
 
-[`scripts/test_similarity.py`](../scripts/test_similarity.py) defines `cosine_similarity`. It checks equal dimensions, computes dot product and magnitudes with `sum` and `math.sqrt`, rejects zero vectors, then divides. Its `main()` embeds a refund query and compares it with a money-back sentence and a weather sentence.
+[`scripts/run_similarity_demo.py`](../scripts/run_similarity_demo.py) defines `cosine_similarity`. It checks equal dimensions, computes dot product and magnitudes with `sum` and `math.sqrt`, rejects zero vectors, then divides. Its `main()` embeds a refund query and compares it with a money-back sentence and a weather sentence.
 
 ```bash
-.venv/bin/python -m scripts.test_similarity
+.venv/bin/python -m scripts.run_similarity_demo
 ```
 
 This is a manual learning experiment. The retrieval script uses Chroma's search instead of calling this Python function across every stored document. The function is also useful as an independent oracle when checking Chroma's returned distances.

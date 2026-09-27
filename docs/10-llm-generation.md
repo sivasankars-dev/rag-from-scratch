@@ -100,7 +100,7 @@ The service itself does not call `load_dotenv()`. That setup is currently in the
 
 ## 5. The basic generation test
 
-[`scripts/test_llm.py`](../scripts/test_llm.py) runs:
+[`scripts/run_llm_demo.py`](../scripts/run_llm_demo.py) runs:
 
 ```python
 llm = LLMService()
@@ -111,7 +111,7 @@ print(result)
 With the environment configured:
 
 ```bash
-.venv/bin/python -m scripts.test_llm
+.venv/bin/python -m scripts.run_llm_demo
 ```
 
 The service prints cost and usage; the script prints the returned text. This is a manual smoke test, not an automated assertion-based test. There is no saved answer transcript in the inspected repository, so this document does not invent one or claim a fresh live test passed.

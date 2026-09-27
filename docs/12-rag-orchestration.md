@@ -141,7 +141,7 @@ Employees get 20 days annual leave.
 Leave requests must be submitted through the HR portal.
 ```
 
-Those are demonstration inputs in `scripts/test_context_builder.py`, not a claim that both passages were retrieved from the sample PDF.
+Those are demonstration inputs in `scripts/run_context_builder_demo.py`, not a claim that both passages were retrieved from the sample PDF.
 
 The builder preserves result order. It does not include metadata, distances, similarity scores or source labels. It does not remove duplicates or enforce a token budget. An empty result list produces an empty context string.
 
@@ -165,7 +165,7 @@ The prompt asks the model to use the context. It does not implement a guarantee 
 
 ## 6. Integration script
 
-[`scripts/test_rag_service.py`](../scripts/test_rag_service.py) loads `.env` before importing the services, then constructs:
+[`scripts/run_rag_service_demo.py`](../scripts/run_rag_service_demo.py) loads `.env` before importing the services, then constructs:
 
 ```python
 rag_service = RAGService(
@@ -182,13 +182,13 @@ It asks the annual-leave question, calls `answer()`, and prints the question and
 From the repository root, after the sample is ingested and the environment/API access is configured:
 
 ```bash
-uv run python -m scripts.test_rag_service
+uv run python -m scripts.run_rag_service_demo
 ```
 
 For a fresh database, the existing ingestion command is:
 
 ```bash
-uv run python -m scripts.ingest_document
+uv run python -m scripts.run_ingest_document
 ```
 
 The generation call consumes LLM API usage and cost. `LLMService` prints usage and its estimated cost before returning the answer. The returned value from `RAGService.answer()` is still just the answer string; there is no usage database or answer/usage response object. The cost estimate retains the limitations documented in [Step 11](11-llm-usage-and-cost-monitoring.md).

@@ -49,13 +49,13 @@ Creating vectors does not rank them. Step 5 supplies a comparison function; Step
 The existing service is unchanged. Run from the root:
 
 ```bash
-.venv/bin/python -m scripts.test_embedding
+.venv/bin/python -m scripts.run_embedding_demo
 ```
 
 It encodes three strings about refunds, getting money back and hot weather. All three print `VECTOR LENGTH: 384` and the first ten coordinates. Coordinates are not individually meaningful labels. To reproduce an offline check after the model has been cached:
 
 ```bash
-HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.test_embedding
+HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.run_embedding_demo
 ```
 
 Verified library versions: sentence-transformers 5.2.3, transformers 4.47.1, torch 2.4.1. The macOS ARM compatibility work is recorded in [Step 1](01-project-setup.md); no versions were changed during documentation.

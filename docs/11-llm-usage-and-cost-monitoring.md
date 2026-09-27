@@ -116,7 +116,7 @@ The official GPT-5.6 Luna page lists cache writes at **1.25 times the uncached i
 
 ## 4. The numeric example available in the repository
 
-[`scripts/test_cost_calculator.py`](../scripts/test_cost_calculator.py) contains these example inputs:
+[`scripts/run_cost_calculator_build_demo.py`](../scripts/run_cost_calculator_build_demo.py) contains these example inputs:
 
 ```text
 model: gpt-5.6-luna
@@ -156,7 +156,7 @@ This issue is still present; it was not fixed during documentation. `LLMService`
 
 ## 5. Prompt caching experiment
 
-[`scripts/llm_cache_test.py`](../scripts/llm_cache_test.py):
+[`scripts/run_llm_cache_test.py`](../scripts/run_llm_cache_test.py):
 
 1. Loads environment variables with `load_dotenv()`.
 2. Constructs an `LLMService`.
@@ -167,7 +167,7 @@ This issue is still present; it was not fixed during documentation. `LLMService`
 The text includes annual leave, sick leave, parental leave, carry-forward and work-from-home sections. It is a synthetic experiment fixture, not extracted PDF text or retrieved chunks. Its work-from-home paragraph must not be treated as content found in the earlier sample PDF.
 
 ```bash
-.venv/bin/python -m scripts.llm_cache_test
+.venv/bin/python -m scripts.run_llm_cache_test
 ```
 
 This command makes a paid network request. Repeating it with the same prompt lets you inspect the printed usage for cache reuse. Repetition within a single prompt is not proof of a cache hit; the relevant evidence is the provider's `cached_tokens` field across requests. The script makes only one call per run and has no automatic comparison, timing measurement or saved result file.

@@ -34,12 +34,12 @@ From the repository root:
 
 ```bash
 HF_HUB_OFFLINE=1 .venv/bin/python -m unittest discover -s tests -v
-HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.test_embedding
-HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.test_similarity
-HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.test_chroma
-HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.ingest_document
-.venv/bin/python -m scripts.inspect_chroma
-HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.retrieve
+HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.run_embedding_demo
+HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.run_similarity_demo
+HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.run_chroma_demo
+HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.run_ingest_document
+.venv/bin/python -m scripts.run_inspect_chroma
+HF_HUB_OFFLINE=1 .venv/bin/python -m scripts.run_retrieve
 ```
 
 Remove the offline environment variable if the model has not been downloaded. The test suite's integration check calls the actual services and compares Chroma distances with the manually implemented cosine formula. It uses temporary storage rather than altering the local sample database.

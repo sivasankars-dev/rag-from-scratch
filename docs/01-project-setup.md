@@ -76,7 +76,7 @@ There were no local commits or remote branch heads at inspection. The first comm
 
 - Installing packages into a different interpreter instead of `.venv`.
 - Assuming `requires-python >=3.12` proves all newer interpreters work.
-- Running `python scripts/retrieve.py` and encountering module/import problems. Use `python -m scripts.retrieve` from the root so `app` is importable.
+- Running `python scripts/run_retrieve.py` and encountering module/import problems. Use `python -m scripts.run_retrieve` from the root so `app` is importable.
 - Committing secrets, `.venv`, upload copies or generated vector databases. `.gitignore` excludes the actual generated directories.
 - Treating the empty original test file as a passing test suite. The scripts are experiments, not assertions.
 

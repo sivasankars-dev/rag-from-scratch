@@ -349,7 +349,7 @@ Do not assume every question outside the PDF returns an empty list. Step 8's wor
 Run from the repository root using the existing environment. If the sample is not yet ingested, run:
 
 ```bash
-.venv/bin/python -m scripts.ingest_document
+.venv/bin/python -m scripts.run_ingest_document
 ```
 
 Then start the app:
@@ -409,9 +409,9 @@ app/
     ├── vector_store.py             Step 7 learning implementation
     └── retrieval_controls_vector_store.py  Step 8 store used by Step 9
 scripts/
-├── ingest_document.py              Populates the sample collection
-├── retrieve.py                     Step 7 script
-└── retrieval_control_retrieve.py   Step 8 script
+├── run_ingest_document.py              Populates the sample collection
+├── run_retrieve.py                     Step 7 script
+└── run_retrieval_control_retrieve.py   Step 8 script
 ```
 
 This shows the relevant files, not every script. There is currently no `app/schemas/__init__.py`; the import works in the inspected environment. There is no separate retrieval router module: the route lives in `app/main.py`.

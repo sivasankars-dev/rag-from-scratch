@@ -9,3 +9,6 @@ data/chroma/
 data/chroma-backup-*/
 # Files saved by the existing upload endpoint.
 docs/uploads/
+
+# Shared generated uploads after the level migration.
+data/uploads/

@@ -1,205 +1,157 @@
 # RAG From Scratch
 
-Learn retrieval-augmented generation (RAG) by building its core pieces in Python. This repository starts with explicit parsing, chunking, embeddings and vector search so we can understand what happens internally before learning higher-level frameworks.
+Learn RAG by building it in independent levels, from fundamentals to production engineering.
 
-**Current milestone: Level 1, Steps 1–13 documented.** Basic end-to-end RAG now connects retrieval, context building, prompt construction and LLM generation through a Python service. The Python project is named `fastapi-rag-poc` (0.1.0); the GitHub repository is `rag-from-scratch`.
+**Level 1 — RAG Fundamentals: Steps 1–17 complete. Level 2 is next.** Completion describes each learning checkpoint's scope; it does not mean every discussed technique is implemented.
 
-## Current architecture
+## Learning philosophy
 
-```text
-PDF → Text Extraction → Character Chunking → Embeddings → ChromaDB
-                                                           ↑
-User Query → Query Embedding ───────────────────────────────┘
-                                                           ↓
-                                      Top-K Candidates → Similarity Threshold → Results or []
-```
+Each level has its own services, scripts, tests, and documentation. Later concepts can evolve without changing or obscuring the earlier learning implementations.
 
-For Step 8, an optional source filter is passed into Chroma using `where` before Top-K candidates are selected. The similarity threshold is applied to the returned candidates. See [Step 8](docs/08-retrieval-controls.md).
-
-Ingestion uses 100-character chunks with 20-character overlap. The sample PDF produces 343 characters and five chunks. `all-MiniLM-L6-v2` produces 384-dimensional vectors; Chroma stores them in the persistent `documents_cosine` collection using cosine distance.
-
-The FastAPI app has health, PDF-upload and `POST /retrieve` routes. Uploads only extract/chunk text (overlap 10); ingestion runs through a script. Retrieval is available through the API or the existing learning scripts. See the [architecture walkthrough](docs/architecture.md).
-
-Separate generation building block (Steps 10–11):
+`levels/` contains these learning implementations. `final-project/` is reserved for combining the concepts into a production-oriented RAG application. It is not implemented yet.
 
 ```text
-Manual prompt → LLMService → OpenAI Responses API → generated text
-                                                → usage → cost estimate → console
+Level 1: Fundamentals
+    ↓
+Level 2: Practical RAG
+    ↓
+Level 3: Advanced RAG
+    ↓
+Level 4: Production RAG
+    ↓
+Final Project
 ```
 
-Step 12 now connects retrieval to generation through `RAGService`; see [RAG Orchestration and Integration](docs/12-rag-orchestration.md). The [Step 11 notes](docs/11-llm-usage-and-cost-monitoring.md) explain the current estimate limitations and the outdated cost-demo call.
+## Repository structure
 
-[Step 13 — Better Chunking](docs/13-better-chunking.md) adds a separate sentence-based chunker and 11 tests. Ingestion and upload still use Step 3; the new class has not been connected to those paths.
+```text
+levels/
+├── level-1-fundamentals/
+│   ├── services/       Existing learning services
+│   ├── app/            Level 1 FastAPI routes, dependencies, and schemas
+│   ├── scripts/        Manual run_* demonstrations
+│   ├── tests/          Automated checks
+│   └── docs/           Steps 1–17 and historical validation notes
+├── level-2-practical-rag/   Next; placeholders only
+├── level-3-advanced-rag/    Planned; placeholders only
+└── level-4-production-rag/ Planned; placeholders only
+final-project/
+├── app/
+├── scripts/
+├── tests/
+└── docs/
+data/
+├── documents/         Shared sample PDFs
+├── evaluation_dataset.json
+├── chroma/            Generated local vector store, ignored
+└── uploads/           Generated upload copies, ignored
+pyproject.toml         Shared environment and test configuration
+uv.lock               Locked dependencies
+```
 
-## Current progress and learning notes
+Every level has `services/`, `scripts/`, `tests/`, and `docs/`. Level 1 additionally keeps the HTTP application in `app/`. No learning implementation is copied into the future levels or final project. The sample PDFs and existing Chroma data stay in the root `data/` directory.
 
-| Step | Topic | Status |
+| Level | Status | Guide |
 | --- | --- | --- |
-| 1 | [Project Setup](docs/01-project-setup.md) | Complete |
-| 2 | [PDF → Text](docs/02-pdf-to-text.md) | Complete |
-| 3 | [Chunking](docs/03-chunking.md) | Complete |
-| 4 | [Embeddings](docs/04-embeddings.md) | Complete |
-| 5 | [Cosine Similarity](docs/05-cosine-similarity.md) | Complete |
-| 6 | [ChromaDB](docs/06-chromadb.md) | Complete |
-| 7 | [Semantic Retrieval](docs/07-retrieval.md) | Complete |
-| 8 | [Retrieval Controls](docs/08-retrieval-controls.md) | Complete |
-| 9 | [Retrieval API](docs/09-retrieval-api.md) | Complete |
-| 10 | [LLM Generation](docs/10-llm-generation.md) | Complete / documented (standalone) |
-| 11 | [LLM Usage & Cost Monitoring](docs/11-llm-usage-and-cost-monitoring.md) | Complete / documented (basic estimate; limitations noted) |
-| 12 | [RAG Orchestration and Integration](docs/12-rag-orchestration.md) | Complete (happy-path integration verified) |
-| 13 | [Better Chunking](docs/13-better-chunking.md) | Complete (separate implementation and tests) |
+| 1 — RAG Fundamentals | Steps 1–17 complete | [Level 1](levels/level-1-fundamentals/README.md) |
+| 2 — Practical RAG Engineering | Next | [Roadmap](levels/level-2-practical-rag/README.md) |
+| 3 — Advanced RAG | Planned | [Roadmap](levels/level-3-advanced-rag/README.md) |
+| 4 — Production RAG Engineering | Planned | [Roadmap](levels/level-4-production-rag/README.md) |
+| Final Project | Reserved; not implemented | [Plan](final-project/README.md) |
 
-Each note explains the idea, a simple analogy, the actual code, trade-offs, mistakes and interview questions. The history begins by recording the already-existing implementation, followed by step-specific documentation and small verified corrections. It does not claim the original implementation was written during this documentation pass.
+## Level 1 learning sequence
 
-## Technology stack
+| Step | Topic |
+| --- | --- |
+| 1 | [Project setup](levels/level-1-fundamentals/docs/01-project-setup.md) |
+| 2 | [PDF to text](levels/level-1-fundamentals/docs/02-pdf-to-text.md) |
+| 3 | [Chunking](levels/level-1-fundamentals/docs/03-chunking.md) |
+| 4 | [Embeddings](levels/level-1-fundamentals/docs/04-embeddings.md) |
+| 5 | [Cosine similarity](levels/level-1-fundamentals/docs/05-cosine-similarity.md) |
+| 6 | [ChromaDB](levels/level-1-fundamentals/docs/06-chromadb.md) |
+| 7 | [Semantic retrieval](levels/level-1-fundamentals/docs/07-retrieval.md) |
+| 8 | [Retrieval controls](levels/level-1-fundamentals/docs/08-retrieval-controls.md) |
+| 9 | [Retrieval API](levels/level-1-fundamentals/docs/09-retrieval-api.md) |
+| 10 | [LLM generation](levels/level-1-fundamentals/docs/10-llm-generation.md) |
+| 11 | [Usage and cost monitoring](levels/level-1-fundamentals/docs/11-llm-usage-and-cost-monitoring.md) |
+| 12 | [RAG orchestration](levels/level-1-fundamentals/docs/12-rag-orchestration.md) |
+| 13 | [Better chunking](levels/level-1-fundamentals/docs/13-better-chunking.md) |
+| 14 | [RAG evaluation](levels/level-1-fundamentals/docs/14-rag-evaluation.md) |
+| 15 | [Retrieval metrics](levels/level-1-fundamentals/docs/15-retrieval-evaluation.md) |
+| 16 | [Retrieval failure cases](levels/level-1-fundamentals/docs/16-retrieval-failure-cases.md) |
+| 17 | [Generation basics](levels/level-1-fundamentals/docs/17-generation-basics.md) |
 
-Versions below were checked against the local environment and `uv.lock`; dependencies were not upgraded.
+Older chapters retain their checkpoint explanations and measured results. Paths and commands now use the Level 1 layout. See the [architecture](levels/level-1-fundamentals/docs/architecture.md) and [validation history](levels/level-1-fundamentals/docs/validation.md).
 
-| Technology | Verified version | Role |
-| --- | --- | --- |
-| Python (pyenv) | 3.12.3 | Runtime on macOS arm64 / M2 |
-| uv | 0.7.20 | Environment and dependency management |
-| FastAPI | 0.141.1 | Existing HTTP routes |
-| Uvicorn | 0.53.0 | HTTP/ASGI server |
-| pypdf | 6.19.0 | PDF text extraction |
-| python-multipart | 0.0.32 | File upload parsing |
-| sentence-transformers | 5.2.3 | Embedding model wrapper |
-| transformers | 4.47.1 | Model/tokenizer support |
-| torch | 2.4.1 | Model execution |
-| ChromaDB | 1.5.9 | Persistent vector storage/search |
-| ONNX Runtime | 1.22.0 | Chroma dependency compatibility |
-| OpenAI SDK | 3.19.2 | Standalone Responses API generation |
+## Environment and imports
 
-`pyproject.toml` declares Python `>=3.12`, but this environment was validated with 3.12.3. The macOS ARM compatibility journey is described in [Step 1](docs/01-project-setup.md). LangChain and LangGraph are not used.
-
-## How to run
-
-Run every command from the repository root. Python 3.12.3 and uv should already be installed. To reproduce the locked environment:
+Run commands from the **repository root**. The verified interpreter is Python 3.12.3; dependencies have not been upgraded for this reorganization.
 
 ```bash
 uv sync --locked --python 3.12.3
-source .venv/bin/activate
 ```
 
-The existing environment was checked with a sync dry run; it required no changes. First-time setup and the first model load may need network access. The public embedding model downloads to the Hugging Face cache. Local embedding/retrieval needs no API key. The separate LLM scripts require `OPENAI_API_KEY` and make paid network calls.
+Select the level for a Python process with `PYTHONPATH=levels/level-1-fundamentals`. Python then finds that level's `services`, `scripts`, and `app` packages. The hyphenated folder name is a filesystem path, not a Python import name. Select one level at a time; do not combine different levels on `PYTHONPATH`.
 
-Start FastAPI:
+Shared data paths remain relative to the repository root. Keep this working directory when running scripts or the API. Existing generated databases are reused, not copied. Legacy ignored `docs/uploads/` files, if present locally, are left untouched; new uploads use `data/uploads/`.
+
+## Run Level 1
+
+### Ingest, inspect, and retrieve
 
 ```bash
-python -m uvicorn app.main:app --reload
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_ingest_document
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_inspect_chroma
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_retrieve
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_retrieval_control_retrieve
 ```
 
-Open `http://127.0.0.1:8000/health` or the interactive `http://127.0.0.1:8000/docs` page. `POST /documents/upload` accepts a PDF and returns text length and chunks. It saves uploaded files in ignored `docs/uploads/`. Stop the server with Ctrl+C.
+Ingestion uses the original character chunker with size 100 and overlap 20. It produces five chunks from the sample and stores 384-dimensional `all-MiniLM-L6-v2` embeddings in the cosine Chroma collection. First model use may need a download; subsequent runs can use cached files.
 
-Ingest the sample and run the original Step 7 retrieval:
+The separate Step 13 `BetterChunker` remains available and tested, but ingestion and upload still use Step 3. Retrieval behavior is unchanged.
+
+### Retrieval evaluation
 
 ```bash
-python -m scripts.run_ingest_document
-python -m scripts.run_inspect_chroma
-python -m scripts.run_retrieve
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_evaluation_dataset
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_retrieval_evaluation
 ```
 
-Ingestion creates the ignored `data/chroma/` database. Run it before retrieval. The fixed sample question is **“How many annual leave days do I get?”**. Step 7 results:
+Step 14 evaluates expected chunk indexes for five questions using Hit Rate@3 and MRR@3. Precision, Recall, F1, and NDCG are conceptual material only. Final answer evaluation is not implemented.
 
-| Rank | Chunk index | Cosine distance ↓ | Cosine similarity ↑ |
-| --- | --- | --- | --- |
-| 1 | 0 | 0.284997 | 0.715003 |
-| 2 | 2 | 0.323565 | 0.676435 |
-
-Both come from `company_policy.pdf`; the first includes “20 days of annual leave per year.” Distances and similarities are related by `similarity = 1 - distance`. They are not probabilities. See [the measured experiment](docs/07-retrieval.md) for the full chunks and limitations.
-
-Step 8 keeps a separate implementation for learning: `app/services/retrieval_controls_vector_store.py` and `scripts/run_retrieval_control_retrieve.py`. Step 7 still uses `app/services/vector_store.py` and `scripts/run_retrieve.py`.
-
-Run Step 8:
+### API
 
 ```bash
-python -m scripts.run_retrieval_control_retrieve
+PYTHONPATH=levels/level-1-fundamentals uv run python -m uvicorn app.main:app --reload
 ```
 
-It requests `top_k=5`, restricts the source to `company_policy.pdf`, and uses the default similarity threshold of `0.50`. The search method returns a list of accepted passages, or `[]` if none pass the current settings; the script prints the results or a no-results message. An empty result does not prove the knowledge base has no answer. See [Step 8's recorded experiments](docs/08-retrieval-controls.md).
+Visit `http://127.0.0.1:8000/docs`. The routes are `GET /health`, `POST /documents/upload`, and `POST /retrieve`. Upload extracts/chunks text without inserting it into Chroma. Retrieval returns passages, not an LLM answer.
 
-Step 9 exposes the Step 8 logic through `POST /retrieve`. After ingestion, start FastAPI as above and use **POST /retrieve → Try it out** at `/docs`, or send:
+### Generation and orchestration
+
+With `OPENAI_API_KEY` configured in your environment or ignored root `.env` file:
 
 ```bash
-curl -X POST http://127.0.0.1:8000/retrieve \
-  -H 'Content-Type: application/json' \
-  -d '{"query":"How many annual leave days do I get?","top_k":5,"source":"company_policy.pdf","similarity_threshold":0.5}'
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_llm_demo
+PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_rag_service_demo
 ```
 
-The API accepts Top-K from **1 to 20** and thresholds from **0 to 1**, inclusive. Defaults are `5` and `0.5`; source is optional. Invalid ranges and non-finite thresholds return HTTP **422** when dependencies initialize successfully. Blank queries return **400**. A completed search returns **200** with the trimmed query and `results`, which may be empty. This returns passages, not an LLM answer. See [Step 9](docs/09-retrieval-api.md) for schemas, examples and known limitations.
+These make paid API calls. The orchestration demo connects question → embedding → retrieval → context → prompt → LLM → answer. There is no `/chat` endpoint. Usage and estimated cost are printed; they are not persisted. The cost estimate has the limitations documented in Step 11.
 
-Optional learning experiments:
+The manual `run_cost_calculator_build_demo` still calls an outdated calculator interface and fails. That existing mismatch is preserved, not fixed as part of moving files.
 
-```bash
-python -m scripts.run_embedding_demo
-python -m scripts.run_similarity_demo
-python -m scripts.run_chroma_demo
-```
-
-The Chroma demo now uses temporary storage, so it does not overwrite ingested PDF chunks. Use module syntax (`-m`) to avoid the import problems encountered when running script file paths directly.
-
-For the new standalone generation experiments, configure `OPENAI_API_KEY` in your environment or ignored local `.env` file, then run:
-
-```bash
-python -m scripts.run_llm_demo
-python -m scripts.run_llm_cache_test
-```
-
-These are manual, paid API experiments, not offline unit tests. See [Step 10](docs/10-llm-generation.md) for setup and scope. No saved live result transcript is available. The separate `scripts/run_cost_calculator_build_demo.py` currently uses an outdated method signature and fails; the working calculator interface and its limitations are documented in [Step 11](docs/11-llm-usage-and-cost-monitoring.md).
-
-## Tests and validation
+## Tests
 
 ```bash
 uv run python -m pytest
 ```
 
-The current suite has **19 passing tests**: 11 for Step 13 and eight for the earlier chunker, PDF extraction/upload, cosine storage and real-model retrieval path. Tests use `unittest` assertions and run through pytest, which is included in the development dependency group. One Starlette/AnyIO dependency deprecation warning remains; it does not fail the suite.
-
-There are no dedicated automated tests for the separate Step 8 controls, `/retrieve`, or Step 12 orchestration. The temporary API review checks are recorded in [Step 9](docs/09-retrieval-api.md). After the embedding model is cached, the suite can also run offline:
+Root pytest configuration selects the Level 1 import path and test directory. To run one file:
 
 ```bash
-HF_HUB_OFFLINE=1 uv run python -m pytest
+uv run python -m pytest levels/level-1-fundamentals/tests/test_better_chunker.py -v
 ```
 
-See [validation and small fixes](docs/validation.md). The important correction was `hsnw` → `hnsw`: the old collection used L2 despite its name. The old local database was preserved in ignored `data/chroma-backup-before-cosine/`, and the current cosine database was rebuilt from the PDF. Fresh clones need only run ingestion.
+After the embedding model is cached, use `HF_HUB_OFFLINE=1` before the command for offline testing. Migration validation: **22 passed, 1 dependency warning**. The suite covers the original chunker, PDF/upload behavior, vector storage, retrieval, BetterChunker, and dataset checks. It does not yet have assertions for every conceptual topic or the paid generation path. A Starlette/AnyIO dependency deprecation warning is known.
 
-## Repository layout
-
-```text
-app/                 FastAPI app and small RAG services
-scripts/             Ingestion, inspection, retrieval and learning experiments
-tests/               Focused regression/integration checks
-data/documents/      Sample PDFs (company_policy.pdf is the ingestion input)
-docs/                Steps 1–13, architecture and validation
-pyproject.toml       Project metadata and dependency requirements
-uv.lock              Resolved dependency versions
-```
-
-`.venv/`, caches, `.env` files, uploaded copies, `.DS_Store` and local Chroma databases are ignored. The original empty `tests/test_embedding.py` is retained as a placeholder; the integration test exercises embeddings.
-
-## Learning roadmap and stop point
-
-```text
-LEVEL 1 — RAG Fundamentals
-  Steps 1–9 complete
-  Step 10 — LLM Generation: complete / documented (standalone)
-  Step 11 — LLM Usage & Cost Monitoring: complete / documented (basic estimate)
-  Step 12 — Context, Prompt Building & RAG Orchestration: complete
-  Step 13 — Better Chunking: complete (separate implementation and tests)
-  Step 14 — RAG Evaluation: next
-  Later features remain outside this checkpoint
-
-LEVEL 2 — Practical RAG Engineering
-LEVEL 3 — Advanced RAG
-LEVEL 4 — Production RAG Engineering
-```
-
-The basic answer path now runs through `RAGService`: question → embedding → retrieval controls → context → prompt → LLM → answer. The reported happy-path answer was “You get 20 days of annual leave per year.” This is one successful example, not a guarantee for all questions.
-
-With the sample already ingested and the local environment configured, run the paid integration smoke test:
-
-```bash
-uv run python -m scripts.run_rag_service_demo
-```
-
-Use `TOKENIZERS_PARALLELISM=false` in the ignored local `.env` to explicitly disable tokenizer parallelism. `/chat`, source/citation responses and advanced RAG features remain unimplemented. See [Step 12](docs/12-rag-orchestration.md) for setup, the tokenizer warning and current limitations.
+Levels 2–4 and the final project will receive their own implementations and tests as learning progresses.

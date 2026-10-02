@@ -20,5 +20,5 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["levels/level-1-fundamentals"]
-testpaths = ["levels/level-1-fundamentals/tests"]
+pythonpath = ["."]
+testpaths = ["tests"]

@@ -10,7 +10,7 @@ def extract_text_from_pdf(filepath):
         if text:
             results.append({
              "text": text,
-             "page_number": page_number
+             "page_number": page_number,
             })
             
     return results

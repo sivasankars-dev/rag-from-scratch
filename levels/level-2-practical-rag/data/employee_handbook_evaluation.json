@@ -1,0 +1,50 @@
+[
+  {
+    "question": "What is the name of the company?",
+    "expected_answer": "Northstar Technologies",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 1
+  },
+  {
+    "question": "What are the standard collaboration hours?",
+    "expected_answer": "10:00 AM to 4:00 PM local time on business days",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 3
+  },
+  {
+    "question": "How many annual leave days do full-time employees receive?",
+    "expected_answer": "20 annual leave days per calendar year, subject to applicable conditions",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 6
+  },
+  {
+    "question": "How should employees protect company passwords?",
+    "expected_answer": "Use unique passwords and do not share them with coworkers",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 12
+  },
+  {
+    "question": "What should production code changes normally use?",
+    "expected_answer": "A pull request",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 15
+  },
+  {
+    "question": "What initial response does a SEV-1 incident require?",
+    "expected_answer": "Immediate response and incident leadership",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 17
+  },
+  {
+    "question": "What information should support include when escalating an issue?",
+    "expected_answer": "Reproducible steps, permitted account or tenant identifiers, timestamps, relevant error messages, and useful diagnostic information",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 19
+  },
+  {
+    "question": "What should employees do if they lose their company laptop?",
+    "expected_answer": "Report the loss immediately through the security or IT incident channel",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 25
+  }
+]

@@ -12,3 +12,5 @@ docs/uploads/
 
 # Shared generated uploads after the level migration.
 data/uploads/
+
+/levels/level-2-practical-rag/data/chroma/

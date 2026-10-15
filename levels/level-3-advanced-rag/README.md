@@ -1,7 +1,89 @@
 # Level 3 — Advanced RAG
 
-**Status: Planned.** No implementation yet.
+## Purpose
 
-Planned topics: Query decomposition, routing, agent/tool-based RAG, advanced context management, and advanced evaluation.
+Level 3 builds on the practical RAG system developed in Level 2. The goal is to understand how to improve retrieval quality, handle difficult questions, and build more capable RAG workflows.
 
-The services, scripts, tests, and docs directories are reserved for this level’s independent learning implementation.
+This level is a collection of independent learning topics. Each topic should include:
+
+- A simple explanation of the problem
+- An implementation with clearly separated responsibilities
+- Unit and integration tests
+- An evaluation where applicable
+- A beginner-friendly document explaining the design and code
+
+## Learning Roadmap
+
+| Topic | Problem it addresses | Status |
+|---|---|---|
+| Multi-Query Retrieval | A user's wording may not match the wording in a document | Implemented; evaluation ongoing |
+| Hybrid Search | Semantic search may miss exact keywords and identifiers | Planned |
+| Reranking | Initial retrieval may return relevant chunks in a poor order | Planned |
+| Query Decomposition | A complex question may require multiple simpler searches | Planned |
+| Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Planned |
+| Contextual Retrieval | A chunk may lose important meaning when separated from its document | Planned |
+| Hierarchical Retrieval | Large documents may need retrieval at multiple levels of detail | Planned |
+| Query Routing | Different questions may require different retrieval strategies | Planned |
+| Agentic and Tool-Based RAG | Some questions need a sequence of decisions or tool calls | Planned |
+| Advanced Context Management | The system must select and organize context within a limited model context window | Planned |
+| Advanced Evaluation | Retrieval and answer quality need systematic measurement | Retrieval comparison implemented; broader evaluation planned |
+
+These topics may be implemented in stages. The roadmap describes learning goals, not a claim that every technique is already production-ready.
+
+## How Level 3 Builds on Level 2
+
+Level 2 established the core RAG pipeline:
+
+1. Load and split documents into chunks.
+2. Generate embeddings for the chunks.
+3. Store the embeddings and metadata in Chroma.
+4. Embed a user's question.
+5. Retrieve relevant chunks.
+6. Use the retrieved context to generate a grounded answer.
+7. Evaluate retrieval and answer quality.
+
+Level 3 reuses these fundamentals and explores ways to improve individual parts of the pipeline. It does not replace the basic RAG architecture; it extends it.
+
+## Current Topic: Multi-Query Retrieval
+
+Multi-Query Retrieval generates alternative search queries from the original question. It retrieves chunks for each query and combines the rankings using Reciprocal Rank Fusion (RRF).
+
+The implementation includes:
+
+- `services/multi_query_generator.py` — generates alternative queries through an LLM client.
+- `services/retrieval_adapter.py` — converts the Level 2 retrieval response into a consistent chunk format.
+- `services/rrf.py` — combines ranked results using Reciprocal Rank Fusion.
+- `services/multi_query_retrieval.py` — coordinates query generation, retrieval, deduplication, ranking, and result limiting.
+- `scripts/run_evaluate_multi_query_retrieval.py` — compares baseline retrieval with multi-query retrieval.
+- `tests/` — tests individual components and their integration.
+- `docs/01-multi-query-retrieval.md` — explains the implementation step by step, starting from the Level 2 pipeline.
+
+## Project Structure
+
+- `services/` — reusable implementation components.
+- `tests/` — unit and integration tests.
+- `scripts/` — runnable evaluation and experiment scripts.
+- `data/` — evaluation datasets used by this level.
+- `docs/` — learning notes, design decisions, examples, and evaluation findings.
+
+## Run the Tests
+
+Run from the repository root:
+
+```bash
+PYTHONPATH=levels/level-3-advanced-rag uv run pytest levels/level-3-advanced-rag/tests -q
+```
+
+## Evaluation
+
+Multi-query retrieval is compared with baseline retrieval using metrics such as Hit Rate@K and Mean Reciprocal Rank (MRR@K).
+
+An experiment must report its dataset, retrieval cutoff, and observed results. A more complex technique should not be assumed to be better merely because it uses more queries or more components.
+
+Run the challenging-dataset evaluation from the repository root after completing the prerequisites in the guide (this makes paid OpenAI calls):
+
+```bash
+PYTHONPATH=levels/level-3-advanced-rag uv run python levels/level-3-advanced-rag/scripts/run_evaluate_multi_query_retrieval.py --dataset challenging
+```
+
+See [Multi-Query Retrieval](docs/01-multi-query-retrieval.md) for the detailed explanation and recorded evaluation findings.

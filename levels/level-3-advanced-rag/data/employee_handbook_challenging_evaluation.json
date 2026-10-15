@@ -1,0 +1,122 @@
+[
+  {
+    "question": "What is the yearly vacation allowance for a permanent full-time staff member?",
+    "expected_answer": "20 annual leave days per calendar year, subject to applicable conditions",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 6
+  },
+  {
+    "question": "During which hours should colleagues generally be available to work together?",
+    "expected_answer": "10:00 AM to 4:00 PM local time on business days",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 3
+  },
+  {
+    "question": "Where must engineers submit code changes before they become production changes?",
+    "expected_answer": "A pull request",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 15
+  },
+  {
+    "question": "What is the first response expected when a critical production incident occurs?",
+    "expected_answer": "Immediate response and incident leadership",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 17
+  },
+  {
+    "question": "What details help the engineering team investigate an escalated customer problem?",
+    "expected_answer": "Reproducible steps, permitted account or tenant identifiers, timestamps, relevant error messages, and useful diagnostic information",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 19
+  },
+  {
+    "question": "What is the reporting procedure if a work-issued computer goes missing?",
+    "expected_answer": "Report the loss immediately through the security or IT incident channel",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 25
+  },
+  {
+    "question": "How should a developer store secrets used by a production application?",
+    "expected_answer": "Use approved secret-management or credential systems and do not commit credentials to source control",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 26
+  },
+  {
+    "question": "What safeguards apply when modifying database schemas?",
+    "expected_answer": "Use version-controlled migration scripts; destructive changes require appropriate review and recovery planning",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 27
+  },
+  {
+    "question": "Can an employee carry unused vacation days into the following year?",
+    "expected_answer": "Unused annual leave may be carried forward only where permitted by the applicable regional policy",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 7
+  },
+  {
+    "question": "What should be done before reserving travel for a business trip?",
+    "expected_answer": "Business travel should be approved before booking whenever practical",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 10
+  },
+  {
+    "question": "How should application logs balance debugging needs with confidentiality?",
+    "expected_answer": "Logs should contain enough information to diagnose failures without unnecessarily exposing secrets, passwords, authentication tokens, or sensitive personal information",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 16
+  },
+  {
+    "question": "What is the principle governing employee permissions to internal systems?",
+    "expected_answer": "Employees should request only the access needed for their responsibilities",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 14
+  },
+  {
+    "question": "What must an incident review document after a serious service disruption?",
+    "expected_answer": "Impact, timeline, contributing factors, detection, response, recovery, and follow-up actions",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 18
+  },
+  {
+    "question": "Which process should employees use to request planned time off?",
+    "expected_answer": "Planned leave should normally be submitted through the approved leave system",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 7
+  },
+  {
+    "question": "How long do employees generally have to file a business expense claim?",
+    "expected_answer": "Within 30 days of the expense date unless a regional policy specifies a different deadline",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 10
+  },
+  {
+    "question": "What should happen to access rights when someone changes teams?",
+    "expected_answer": "Access should be reviewed and adjusted; permissions no longer required should not remain indefinitely",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 23
+  },
+  {
+    "question": "Is it acceptable to put company credentials directly into a Git repository?",
+    "expected_answer": "No. Production credentials must be stored in approved secret-management or credential systems and must not be committed to source control",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 26
+  },
+  {
+    "question": "Who is accountable for ensuring a production service has clear ownership?",
+    "expected_answer": "Every production service should have a clearly identified technical owner and backup owner",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 1
+  },
+  {
+    "question": "What should employees do when they suspect their credentials have been exposed?",
+    "expected_answer": "Report suspected credential exposure through the security incident channel immediately",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 13
+  },
+  {
+    "question": "What information should be communicated before planned service maintenance?",
+    "expected_answer": "Expected start time, expected duration, customer impact, and rollback considerations",
+    "expected_source": "rag_practice_employee_handbook.pdf",
+    "expected_chunk": 20
+  }
+]

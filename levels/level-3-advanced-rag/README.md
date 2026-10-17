@@ -20,7 +20,7 @@ This level is a collection of independent learning topics. Each topic should inc
 | Hybrid Search | Semantic search may miss exact keywords and identifiers | Planned |
 | Reranking | Initial retrieval may return relevant chunks in a poor order | Planned |
 | Query Decomposition | A complex question may require multiple simpler searches | Planned |
-| Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Planned |
+| Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Implemented; evaluation pending |
 | Contextual Retrieval | A chunk may lose important meaning when separated from its document | Planned |
 | Hierarchical Retrieval | Large documents may need retrieval at multiple levels of detail | Planned |
 | Query Routing | Different questions may require different retrieval strategies | Planned |
@@ -44,7 +44,9 @@ Level 2 established the core RAG pipeline:
 
 Level 3 reuses these fundamentals and explores ways to improve individual parts of the pipeline. It does not replace the basic RAG architecture; it extends it.
 
-## Current Topic: Multi-Query Retrieval
+## Topics Implemented So Far
+
+### Multi-Query Retrieval
 
 Multi-Query Retrieval generates alternative search queries from the original question. It retrieves chunks for each query and combines the rankings using Reciprocal Rank Fusion (RRF).
 
@@ -57,6 +59,21 @@ The implementation includes:
 - `scripts/run_evaluate_multi_query_retrieval.py` — compares baseline retrieval with multi-query retrieval.
 - `tests/` — tests individual components and their integration.
 - `docs/01-multi-query-retrieval.md` — explains the implementation step by step, starting from the Level 2 pipeline.
+
+### Parent-Child Retrieval
+
+Small retrieved chunks can omit the surrounding context needed to answer a question. Parent-Child Retrieval searches smaller child chunks, then fetches their larger parent chunks as context. Multiple matching children from one parent produce only one returned parent.
+
+The implementation includes:
+
+- `services/parent_child_chunker.py` — splits text into non-overlapping parents and overlapping children, with IDs linking each child to its parent.
+- `services/parent_child_store.py` — saves and retrieves parent records in a local JSON file.
+- `services/child_vector_store.py` — persists caller-supplied child embeddings and metadata in Chroma and searches them.
+- `services/parent_child_retrieval.py` — embeds the question, searches children, and returns unique existing parents.
+- `tests/test_parent_child_chunker.py`, `tests/test_parent_child_store.py`, `tests/test_child_vector_store.py`, and `tests/test_parent_child_retrieval.py` — test individual components.
+- `tests/test_parent_child_integration.py` — connects the pipeline using temporary JSON/Chroma storage and fake embeddings.
+
+See [Parent-Child Retrieval](docs/02-parent-child-retrieval.md) for the design, runnable examples, and limitations. Implementation and tests are available; retrieval-quality evaluation is pending. The integration test checks data flow, not semantic search quality.
 
 ## Project Structure
 
@@ -87,3 +104,5 @@ PYTHONPATH=levels/level-3-advanced-rag uv run python levels/level-3-advanced-rag
 ```
 
 See [Multi-Query Retrieval](docs/01-multi-query-retrieval.md) for the detailed explanation and recorded evaluation findings.
+
+Parent-Child Retrieval has no dedicated retrieval-quality evaluation script or recorded benchmark yet. Its passing tests do not establish an improvement over child-only retrieval; see the [evaluation limitations and next steps](docs/02-parent-child-retrieval.md#12-limitations-and-next-steps).

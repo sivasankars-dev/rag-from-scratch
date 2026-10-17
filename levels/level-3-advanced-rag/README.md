@@ -20,7 +20,7 @@ This level is a collection of independent learning topics. Each topic should inc
 | Hybrid Search | Semantic search may miss exact keywords and identifiers | Planned |
 | Reranking | Initial retrieval may return relevant chunks in a poor order | Planned |
 | Query Decomposition | A complex question may require multiple simpler searches | Planned |
-| Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Implemented; evaluation pending |
+| Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Implemented; text-proxy evaluator available; real run pending |
 | Contextual Retrieval | A chunk may lose important meaning when separated from its document | Planned |
 | Hierarchical Retrieval | Large documents may need retrieval at multiple levels of detail | Planned |
 | Query Routing | Different questions may require different retrieval strategies | Planned |
@@ -73,7 +73,19 @@ The implementation includes:
 - `tests/test_parent_child_chunker.py`, `tests/test_parent_child_store.py`, `tests/test_child_vector_store.py`, and `tests/test_parent_child_retrieval.py` — test individual components.
 - `tests/test_parent_child_integration.py` — connects the pipeline using temporary JSON/Chroma storage and fake embeddings.
 
-See [Parent-Child Retrieval](docs/02-parent-child-retrieval.md) for the design, runnable examples, and limitations. Implementation and tests are available; retrieval-quality evaluation is pending. The integration test checks data flow, not semantic search quality.
+See [Parent-Child Retrieval](docs/02-parent-child-retrieval.md) for the design, runnable examples, and limitations. Implementation and tests are available; a first-pass text-proxy evaluator is available, with a real evaluation run pending. The integration test checks data flow, not semantic search quality.
+
+### Ingest the handbook for Parent-Child Retrieval
+
+From the repository root:
+
+```bash
+PYTHONPATH=levels/level-3-advanced-rag uv run python levels/level-3-advanced-rag/scripts/run_parent_child_ingestion.py
+```
+
+Initial experimental sizes are **100 words per parent, 30 words per child, and 10 words of child overlap**. The script reuses Level 2's PDF loader and local embedding model, then replaces this handbook's records only in dedicated Level 3 stores. The first embedding-model use may require a download; no OpenAI call is made.
+
+Stop readers and other ingestion processes before running. See [Parent-Child ingestion](docs/03-parent-child-ingestion.md) for storage paths, source-scoped reset behavior, counts, and failure recovery. This prepares data; it does not evaluate retrieval quality.
 
 ## Project Structure
 
@@ -105,4 +117,12 @@ PYTHONPATH=levels/level-3-advanced-rag uv run python levels/level-3-advanced-rag
 
 See [Multi-Query Retrieval](docs/01-multi-query-retrieval.md) for the detailed explanation and recorded evaluation findings.
 
-Parent-Child Retrieval has no dedicated retrieval-quality evaluation script or recorded benchmark yet. Its passing tests do not establish an improvement over child-only retrieval; see the [evaluation limitations and next steps](docs/02-parent-child-retrieval.md#12-limitations-and-next-steps).
+Parent-Child Retrieval now has a first-pass evaluator using normalized `expected_answer` substring matching against returned parent text. **This is only a relevance proxy, not human-verified semantic relevance or answer-generation evaluation.** A real run and recorded results remain pending.
+
+After ingestion, run:
+
+```bash
+PYTHONPATH=levels/level-3-advanced-rag uv run python levels/level-3-advanced-rag/scripts/run_evaluate_parent_child_retrieval.py
+```
+
+It reports Hit Rate@3, MRR@3, per-question outcomes, and average retrieval latency on the existing 20-question challenging dataset. `top_k=3` searches three children; metrics rank the deduplicated parent results. See [Parent-Child evaluation](docs/04-parent-child-evaluation.md) for prerequisites, the matching rule, and limitations. These proxy metrics are not directly comparable with Multi-Query's chunk-ID metrics.

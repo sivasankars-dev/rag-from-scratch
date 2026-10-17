@@ -18,7 +18,7 @@ def test_builds_parent_and_child_chunks():
 
     parent = result["parents"][0]
     assert parent["text"] == "one two three four five six seven eight"
-    assert parent["parent_id"] == "handbook.pdf_parent_0"
+    assert parent["parent_id"] == "handbook.pdf_page_1_parent_0"
 
     children = result["children"]
 
@@ -87,3 +87,47 @@ def test_invalid_chunk_configuration_raises_value_error(
             child_chunk_size=child_size,
             child_chunk_overlap=overlap,
         )
+
+def test_parent_ids_are_unique_across_separate_pages():
+    page_one = build_parent_child_chunks(
+        text="page one content here",
+        source="handbook.pdf",
+        page_number=1,
+        parent_chunk_size=3,
+        child_chunk_size=2,
+        child_chunk_overlap=0,
+    )
+
+    page_two = build_parent_child_chunks(
+        text="page two content here",
+        source="handbook.pdf",
+        page_number=2,
+        parent_chunk_size=3,
+        child_chunk_size=2,
+        child_chunk_overlap=0,
+    )
+
+    page_one_parent_id = page_one["parents"][0]["parent_id"]
+    page_two_parent_id = page_two["parents"][0]["parent_id"]
+
+    assert page_one_parent_id != page_two_parent_id
+
+    page_one_parent_ids = {
+        parent["parent_id"] for parent in page_one["parents"]
+    }
+    page_two_parent_ids = {
+        parent["parent_id"] for parent in page_two["parents"]
+    }
+
+    # Parent IDs must not collide across pages.
+    assert page_one_parent_ids.isdisjoint(page_two_parent_ids)
+
+    # Every child must reference a parent created on its own page.
+    assert all(
+        child["parent_id"] in page_one_parent_ids
+        for child in page_one["children"]
+    )
+    assert all(
+        child["parent_id"] in page_two_parent_ids
+        for child in page_two["children"]
+    )

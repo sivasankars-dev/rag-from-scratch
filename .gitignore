@@ -15,3 +15,6 @@ data/uploads/
 
 /levels/level-2-practical-rag/data/chroma/
 /levels/level-3-advanced-rag/data/chroma*/
+
+# Generated Level 3 parent-child retrieval data
+/levels/level-3-advanced-rag/data/parent_child/

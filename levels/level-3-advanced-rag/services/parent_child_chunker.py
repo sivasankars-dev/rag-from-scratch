@@ -54,7 +54,7 @@ def build_parent_child_chunks(
         parent_words = words[start:start+parent_chunk_size]
         parent_text = " ".join(parent_words)
 
-        parent_id = f"{source}_parent_{len(parents)}"
+        parent_id = f"{source}_page_{page_number}_parent_{len(parents)}"
 
         parents.append({
             "text": parent_text,

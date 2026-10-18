@@ -21,7 +21,7 @@ This level is a collection of independent learning topics. Each topic should inc
 | Reranking | Initial retrieval may return relevant chunks in a poor order | Planned |
 | Query Decomposition | A complex question may require multiple simpler searches | Planned |
 | Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Implemented; text-proxy evaluator available; real run pending |
-| Contextual Retrieval | A chunk may lose important meaning when separated from its document | Planned |
+| Contextual Retrieval | A chunk may lose important meaning when separated from its document | Implemented; ingestion and proxy evaluation complete |
 | Hierarchical Retrieval | Large documents may need retrieval at multiple levels of detail | Planned |
 | Query Routing | Different questions may require different retrieval strategies | Planned |
 | Agentic and Tool-Based RAG | Some questions need a sequence of decisions or tool calls | Planned |

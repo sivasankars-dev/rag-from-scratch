@@ -1,5 +1,3 @@
-"""Offline-testable retrieval metrics using an explicitly limited text proxy."""
-
 import json
 from pathlib import Path
 import time

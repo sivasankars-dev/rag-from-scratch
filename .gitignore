@@ -18,3 +18,8 @@ data/uploads/
 
 # Generated Level 3 parent-child retrieval data
 /levels/level-3-advanced-rag/data/parent_child/
+/levels/level-3-advanced-rag/data/contextual_retrieval/
+/levels/level-3-advanced-rag/data/contextual_retrieval_test/
+
+# Generated Level 3 contextual retrieval data
+/levels/level-3-advanced-rag/data/contextual_retrieval_*/

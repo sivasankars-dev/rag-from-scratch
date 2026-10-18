@@ -17,7 +17,7 @@ This level is a collection of independent learning topics. Each topic should inc
 | Topic | Problem it addresses | Status |
 |---|---|---|
 | Multi-Query Retrieval | A user's wording may not match the wording in a document | Implemented; evaluation ongoing |
-| Hybrid Search | Semantic search may miss exact keywords and identifiers | Planned |
+| Hybrid Search | Semantic search may miss exact keywords and identifiers | Implemented; evaluation reproduced; ranking trade-offs documented |
 | Reranking | Initial retrieval may return relevant chunks in a poor order | Planned |
 | Query Decomposition | A complex question may require multiple simpler searches | Planned |
 | Parent-Child Retrieval | Small chunks can lack the context needed to answer a question | Implemented; text-proxy evaluator available; real run pending |

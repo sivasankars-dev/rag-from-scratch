@@ -1,7 +1,28 @@
-
 from pathlib import Path
 
 import chromadb
+
+
+CHILD_METADATA_FIELDS = (
+    "parent_id",
+    "source",
+    "page_number",
+    "document_id",
+    "section_id",
+    "section_number",
+    "section_title",
+    "section_type",
+    "parent_section_id",
+    "section_path",
+    "section_start_page",
+    "section_end_page",
+)
+
+REQUIRED_METADATA_FIELDS = (
+    "parent_id",
+    "source",
+    "page_number",
+)
 
 
 class ChildVectorStore:
@@ -33,15 +54,27 @@ class ChildVectorStore:
         metadatas = []
 
         for child in children:
+            missing = [
+                field
+                for field in REQUIRED_METADATA_FIELDS
+                if field not in child or child[field] is None
+            ]
+            if missing:
+                raise ValueError(
+                    f"Child is missing required metadata fields: {missing}"
+                )
+
             ids.append(child["child_id"])
             documents.append(child["text"])
-            metadatas.append(
-                {
-                    "parent_id": child["parent_id"],
-                    "source": child["source"],
-                    "page_number": child["page_number"],
-                }
-            )
+
+            # Preserve known hierarchy fields and omit None values.
+            # Chroma metadata supports scalar values, not Python None.
+            metadata = {
+                field: child[field]
+                for field in CHILD_METADATA_FIELDS
+                if field in child and child[field] is not None
+            }
+            metadatas.append(metadata)
 
         self.collection.upsert(
             ids=ids,

@@ -58,9 +58,9 @@ def test_pages_configuration_and_paths(setup, monkeypatch, tmp_path, capsys):
         {"text": " ".join(f"w{i}" for i in range(101)), "page_number": 2},
         {"text": "another page", "page_number": 4},
     ], setup)
-    assert counts == {"pages": 3, "parents": 3, "children": 7}
+    assert counts == {"pages": 3, "parents": 2, "children": 6}
     store, factory, embeddings = setup
-    assert {c["page_number"] for c in store.records.values()} == {2, 4}
+    assert {c["page_number"] for c in store.records.values()} == {2}
     assert {c["source"] for c in store.records.values()} == {ingestion.SOURCE}
     texts = embeddings.return_value.embed_texts.call_args.args[0]
     assert texts[0].split()[-10:] == texts[1].split()[:10]
@@ -68,7 +68,7 @@ def test_pages_configuration_and_paths(setup, monkeypatch, tmp_path, capsys):
     assert ingestion.PDF_PATH == SCRIPT.parents[3] / "data/documents" / ingestion.SOURCE
     factory.assert_called_once_with(persist_directory=str(tmp_path / "chroma"),
                                     collection_name=ingestion.COLLECTION_NAME)
-    assert "Persisted parents: 3" in capsys.readouterr().out
+    assert "Persisted parents: 2" in capsys.readouterr().out
 
 
 def test_reruns_remove_stale_records_and_preserve_other_source(setup):

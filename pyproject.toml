@@ -6,6 +6,7 @@ dependencies = [
     "chromadb==1.5.9",
     "fastapi[standard]>=0.141.1",
     "langgraph>=1.2.17",
+    "neo4j>=6.4.1",
     "onnxruntime==1.22.0",
     "openai>=3.19.2",
     "pypdf>=6.19.0",

@@ -42,10 +42,12 @@ class BetterChunker:
                 current_length = 0
                 current_sentences = []
                 continue
+            
+            separator_length = 1 if current_sentences else 0
 
-            if current_length + sentence_length + len(current_sentences) <= max_chunk_size:
+            if current_length + sentence_length + separator_length <= max_chunk_size:
                 current_sentences.append(sentence)
-                current_length += sentence_length
+                current_length += sentence_length + separator_length
             else:
                 chunks.append(" ".join(current_sentences))
 

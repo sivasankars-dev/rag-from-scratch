@@ -10,6 +10,10 @@ from services.cross_encoder_reranker import CrossEncoderReranker
 from services.bm25_retrieval import BM25Retriever
 from services.hybrid_retrieval import HybridRetriever
 from services.retrieval_adapter import RetrievalAdapter
+from services.reviewed_retrieval_evaluator import (
+    find_relevant_chunk_rank,
+)
+from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[3]
 LEVEL2 = ROOT / "levels" / "level-2-practical-rag"
@@ -18,6 +22,7 @@ LEVEL3 = ROOT / "levels" / "level-3-advanced-rag"
 DATASETS = {
     "original": LEVEL2 / "data" / "employee_handbook_evaluation.json",
     "challenging": LEVEL3 / "data" / "employee_handbook_challenging_evaluation.json",
+    "reviewed": LEVEL3 / "data" / "employee_handbook_reviewed_evaluation_v1.json",
 }
 
 CHROMA_PATH = LEVEL2 / "data" / "chroma_employee_handbook"
@@ -82,22 +87,37 @@ def evaluate_results(
 
         metadata = [result["metadata"] for result in results]
 
-        rank = evaluator.find_expected_chunk_rank(
-            metadata,
-            case["expected_chunk"],
-            case["expected_source"],
-        )
+        if "relevant_chunks" in case:
+            rank = find_relevant_chunk_rank(
+                metadata,
+                relevant_chunks=case["relevant_chunks"],
+                expected_source=case["expected_source"],
+                top_k=top_k,
+            )
+        else:
+            rank = evaluator.find_expected_chunk_rank(
+                metadata[:top_k],
+                case["expected_chunk"],
+                case["expected_source"],
+            )
 
         hits.append(rank is not None)
         reciprocal_ranks.append(evaluator.calculate_reciprocal_rank(rank))
 
         details.append(
             {
+                "case_id": case.get("case_id"),
                 "question": case["question"],
                 "expected_source": case["expected_source"],
                 "expected_chunk": case["expected_chunk"],
+                "relevant_chunks": case.get(
+                    "relevant_chunks",
+                    [case["expected_chunk"]],
+                ),
+                "retrieved_metadata": metadata[:top_k],
                 "rank": rank,
                 "hit": rank is not None,
+                "latency_ms": elapsed_ms,
             }
         )
 
@@ -125,31 +145,100 @@ def diagnose_query(
     bm25_retriever,
     hybrid_retriever,
     top_k,
+    reranker,
+    candidate_k,
 ):
     expected_id = (expected_source, expected_chunk)
 
-    rankings = {
-        "Vector-only": vector_retriever.retrieve(question, top_k=top_k),
-        "BM25-only": bm25_retriever.search(question, top_k=top_k),
-        "Hybrid (RRF)": hybrid_retriever.retrieve(question, top_k=top_k),
-    }
+    candidates = hybrid_retriever.retrieve(
+        question,
+        top_k=candidate_k,
+    )
 
-    print(f"\nQuestion: {question}")
+    reranked_candidates = reranker.rerank(
+        question,
+        candidates,
+        top_n=candidate_k,
+    )
+
+    print(f"\n--- Reranking diagnostic: {question} ---")
     print(f"Expected chunk: {expected_id}")
+    print(f"Final cutoff: top {top_k}")
 
-    for strategy, results in rankings.items():
-        print(f"\n{strategy}:")
-
+    for label, results in (
+        ("Hybrid candidates before reranking", candidates),
+        ("All candidates after reranking", reranked_candidates),
+    ):
+        print(f"\n{label}:")
         expected_rank = None
 
         for rank, result in enumerate(results, start=1):
             metadata = result["metadata"]
-            chunk_id = (metadata["source"], metadata["chunk_index"])
+            result_id = (
+                metadata["source"],
+                metadata["chunk_index"],
+            )
+            is_expected = result_id == expected_id
 
-            if chunk_id == expected_id:
+            if is_expected:
                 expected_rank = rank
 
-            print(f"  Rank {rank}: {chunk_id}, " f"score={result.get('score', 'N/A')}")
+            marker = " <-- EXPECTED" if is_expected else ""
+            score = result.get("reranker_score")
+            score_label = (
+                f", reranker_score={score:.4f}"
+                if score is not None
+                else ""
+            )
+
+            print(
+                f"  Rank {rank}: {result_id}"
+                f"{score_label}{marker}"
+            )
+            print(f"    Text: {result['document']}")
+
+        if expected_rank is None:
+            print("Expected chunk is absent from this candidate list.")
+        else:
+            print(f"Expected chunk rank: {expected_rank}")
+            print(
+                f"Within final top {top_k}: "
+                f"{expected_rank <= top_k}"
+            )
+
+    rankings = {
+        "Vector-only": vector_retriever.retrieve(
+            question,
+            top_k=top_k,
+        ),
+        "BM25-only": bm25_retriever.search(
+            question,
+            top_k=top_k,
+        ),
+        "Hybrid (RRF)": hybrid_retriever.retrieve(
+            question,
+            top_k=top_k,
+        ),
+    }
+
+    for strategy, results in rankings.items():
+        print(f"\n{strategy}:")
+        expected_rank = None
+
+        for rank, result in enumerate(results, start=1):
+            metadata = result["metadata"]
+            result_id = (
+                metadata["source"],
+                metadata["chunk_index"],
+            )
+
+            if result_id == expected_id:
+                expected_rank = rank
+
+            print(
+                f"  Rank {rank}: {result_id}, "
+                f"score={result.get('score', 'N/A')}"
+            )
 
         print(f"  Expected chunk rank: {expected_rank or 'MISS'}")
 
@@ -161,17 +250,12 @@ def diagnose_query(
     )
 
     for rank, item in enumerate(all_candidates, start=1):
-        chunk_id = item["chunk_id"]
-        vector_rank = item["vector_rank"]
-        bm25_rank = item["bm25_rank"]
-
         print(
-            f"  Rank {rank}: {chunk_id}, "
-            f"vector_rank={vector_rank}, "
-            f"bm25_rank={bm25_rank}, "
+            f"  Rank {rank}: {item['chunk_id']}, "
+            f"vector_rank={item['vector_rank']}, "
+            f"bm25_rank={item['bm25_rank']}, "
             f"rrf_score={item['rrf_score']:.6f}"
         )
-
 
 def main():
     parser = argparse.ArgumentParser(
@@ -179,7 +263,7 @@ def main():
     )
     parser.add_argument(
         "--dataset",
-        choices=["original", "challenging"],
+        choices=["original", "challenging", "reviewed"],
         default="original",
     )
     parser.add_argument("--top-k", type=int, default=3)
@@ -198,9 +282,20 @@ def main():
     parser.add_argument(
         "--diagnose",
         action="store_true",
-        help="Print candidate rankings for questions 9 and 18.",
+        help="Print candidate and reranking diagnostics for questions 6 and 18.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="Save a JSON report to a new file.",
     )
     args = parser.parse_args()
+
+    if args.dataset == "reviewed" and args.diagnose:
+        parser.error(
+            "--diagnose currently supports only original/challenging "
+            "single-label datasets; omit it for reviewed evaluation"
+        )
 
     if args.top_k <= 0:
         parser.error("--top-k must be greater than zero")
@@ -229,7 +324,53 @@ def main():
     )
 
     with DATASETS[args.dataset].open(encoding="utf-8") as file:
-        cases = json.load(file)
+        dataset = json.load(file)
+
+    if args.dataset == "reviewed":
+        if not isinstance(dataset, dict):
+            raise ValueError("Reviewed dataset must be an object")
+
+        dataset_version = dataset.get("dataset_version")
+        if dataset_version != "handbook-reviewed-v1":
+            raise ValueError("Unsupported reviewed dataset version")
+
+        cases = dataset.get("cases")
+    else:
+        dataset_version = args.dataset
+        cases = dataset
+
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("Dataset must contain a nonempty cases list")
+
+    for index, case in enumerate(cases, start=1):
+        if not isinstance(case, dict):
+            raise ValueError(f"Case {index} must be an object")
+
+        for field in ("question", "expected_source"):
+            value = case.get(field)
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(
+                    f"Case {index}: {field} must be a nonempty string"
+                )
+
+        expected_chunk = case.get("expected_chunk")
+        if (
+            isinstance(expected_chunk, bool)
+            or not isinstance(expected_chunk, int)
+            or expected_chunk < 0
+        ):
+            raise ValueError(
+                f"Case {index}: expected_chunk must be a nonnegative integer"
+            )
+
+        if args.dataset == "reviewed":
+            # Validate labels using the same rules as the evaluator.
+            find_relevant_chunk_rank(
+                [],
+                relevant_chunks=case.get("relevant_chunks"),
+                expected_source=case["expected_source"],
+                top_k=args.top_k,
+            )
 
     vector_store = vector_store_module.VectorStore(
         persist_directory=str(CHROMA_PATH),
@@ -248,13 +389,20 @@ def main():
         raise ValueError("The Chroma collection is empty.")
 
     available_ids = {chunk_id(chunk) for chunk in corpus}
+
     for case in cases:
-        expected_id = (
-            case["expected_source"],
-            case["expected_chunk"],
-        )
-        if expected_id not in available_ids:
-            raise ValueError(f"Expected chunk {expected_id} is missing from Chroma.")
+        required_indices = {case["expected_chunk"]}
+
+        if args.dataset == "reviewed":
+            required_indices.update(case["relevant_chunks"])
+
+        for index in required_indices:
+            expected_id = (case["expected_source"], index)
+
+            if expected_id not in available_ids:
+                raise ValueError(
+                    f"Expected chunk {expected_id} is missing from Chroma."
+                )
 
     embedding_service = embedding_module.EmbeddingService()
     raw_retrieval = retrieval_module.RetrievalService(vector_store)
@@ -293,7 +441,15 @@ def main():
         "Hybrid + Cross-Encoder": retrieve_hybrid_reranked,
     }
 
-    print(f"Dataset: {args.dataset}")
+    print(f"Dataset version: {dataset_version}")
+    print(
+        "Relevance labels: "
+        + (
+            "reviewed multiple chunks"
+            if args.dataset == "reviewed"
+            else "original single chunk"
+        )
+    )
     print(f"Questions: {len(cases)}")
     print(f"Corpus chunks: {len(corpus)}")
     print(f"Top-K: {args.top_k}")
@@ -308,6 +464,25 @@ def main():
     )
 
     all_details = {}
+    
+    report = {
+        "report_schema_version": 1,
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "dataset": args.dataset,
+        "dataset_version": dataset_version,
+        "dataset_path": str(DATASETS[args.dataset].relative_to(ROOT)),
+        "question_count": len(cases),
+        "corpus_chunk_count": len(corpus),
+        "collection_name": COLLECTION_NAME,
+        "top_k": args.top_k,
+        "candidate_k": args.candidate_k,
+        "warmup_queries_per_strategy": min(
+            args.warmup_queries,
+            len(cases),
+        ),
+        "latency_unit": "milliseconds",
+        "strategies": {},
+    }
 
     for name, retrieve in strategies.items():
         hit_rate, mrr, details, latency_ms, p95_latency_ms = evaluate_results(
@@ -319,6 +494,14 @@ def main():
         )
 
         all_details[name] = details
+        
+        report["strategies"][name] = {
+            "hit_rate_at_k": hit_rate,
+            "mrr_at_k": mrr,
+            "average_latency_ms": latency_ms,
+            "p95_latency_ms": p95_latency_ms,
+            "cases": details,
+        }
 
         print(
             f"{name:<26} "
@@ -340,8 +523,12 @@ def main():
             rank_label = f"rank {rank}" if rank is not None else "MISS"
             print(f"  {name:<18} {rank_label}")
 
+    if args.output is not None:
+        save_evaluation_report(args.output, report)
+        print(f"\nSaved report: {args.output}")
+        
     if args.diagnose:
-        for question_number in (9, 18):
+        for question_number in (6, 18):
             if question_number > len(cases):
                 continue
 
@@ -355,8 +542,23 @@ def main():
                 bm25_retriever=bm25,
                 hybrid_retriever=hybrid,
                 top_k=args.top_k,
+                reranker=reranker,
+                candidate_k=args.candidate_k,
             )
 
+def save_evaluation_report(output_path, report):
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    with output_path.open("x", encoding="utf-8") as file:
+        json.dump(
+            report,
+            file,
+            indent=2,
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+        file.write("\n")
+        
 if __name__ == "__main__":
     main()

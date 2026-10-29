@@ -1,0 +1,2648 @@
+{
+  "report_schema_version": 1,
+  "created_at_utc": "2026-10-29T00:44:18.889039+00:00",
+  "dataset": "reviewed",
+  "dataset_version": "handbook-reviewed-v1",
+  "dataset_path": "levels/level-3-advanced-rag/data/employee_handbook_reviewed_evaluation_v1.json",
+  "question_count": 20,
+  "corpus_chunk_count": 28,
+  "collection_name": "employee_handbook_evaluation",
+  "top_k": 3,
+  "candidate_k": 10,
+  "warmup_queries_per_strategy": 3,
+  "latency_unit": "milliseconds",
+  "strategies": {
+    "Vector-only": {
+      "hit_rate_at_k": 0.95,
+      "mrr_at_k": 0.8166666666666667,
+      "average_latency_ms": 18.977931200060993,
+      "p95_latency_ms": 44.252000050619245,
+      "cases": [
+        {
+          "case_id": "handbook-q01",
+          "question": "What is the yearly vacation allowance for a permanent full-time staff member?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 6,
+          "relevant_chunks": [
+            6,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 6,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "document_type": "employee_handbook"
+            },
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 4,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "document_type": "employee_handbook",
+              "chunk_index": 8
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.940833017230034
+        },
+        {
+          "case_id": "handbook-q02",
+          "question": "During which hours should colleagues generally be available to work together?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 3,
+          "relevant_chunks": [
+            3
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 3,
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 4,
+              "page_number": 3,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 10.751208988949656
+        },
+        {
+          "case_id": "handbook-q03",
+          "question": "Where must engineers submit code changes before they become production changes?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 15,
+          "relevant_chunks": [
+            15
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 7,
+              "document_type": "employee_handbook",
+              "chunk_index": 15,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 16,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 7,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 26,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.189416003413498
+        },
+        {
+          "case_id": "handbook-q04",
+          "question": "What is the first response expected when a critical production incident occurs?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 17,
+          "relevant_chunks": [
+            17
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 18,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 8
+            },
+            {
+              "chunk_index": 17,
+              "page_number": 8,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 5,
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 42.296041967347264
+        },
+        {
+          "case_id": "handbook-q05",
+          "question": "What details help the engineering team investigate an escalated customer problem?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 19,
+          "relevant_chunks": [
+            19
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 19,
+              "page_number": 9,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 18,
+              "page_number": 8
+            },
+            {
+              "chunk_index": 2,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 2
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.48625004477799
+        },
+        {
+          "case_id": "handbook-q06",
+          "question": "What is the reporting procedure if a work-issued computer goes missing?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 25,
+          "relevant_chunks": [
+            13,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "chunk_index": 25,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 9,
+              "chunk_index": 20,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 13,
+              "page_number": 6
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 43.77991601359099
+        },
+        {
+          "case_id": "handbook-q07",
+          "question": "How should a developer store secrets used by a production application?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 26,
+              "page_number": 12
+            },
+            {
+              "document_type": "employee_handbook",
+              "page_number": 2,
+              "chunk_index": 2,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 7,
+              "document_type": "employee_handbook",
+              "chunk_index": 16,
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 11.219625012017787
+        },
+        {
+          "case_id": "handbook-q08",
+          "question": "What safeguards apply when modifying database schemas?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 27,
+          "relevant_chunks": [
+            16,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 27,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 12
+            },
+            {
+              "page_number": 7,
+              "chunk_index": 16,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 12,
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 44.252000050619245
+        },
+        {
+          "case_id": "handbook-q09",
+          "question": "Can an employee carry unused vacation days into the following year?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            8
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 6,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4
+            },
+            {
+              "document_type": "employee_handbook",
+              "page_number": 3,
+              "chunk_index": 4,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 8,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 4
+            }
+          ],
+          "rank": 3,
+          "hit": true,
+          "latency_ms": 10.329583077691495
+        },
+        {
+          "case_id": "handbook-q10",
+          "question": "What should be done before reserving travel for a business trip?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 10,
+              "page_number": 5
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 3,
+              "chunk_index": 4
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 9,
+              "page_number": 5
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 12.09833298344165
+        },
+        {
+          "case_id": "handbook-q11",
+          "question": "How should application logs balance debugging needs with confidentiality?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 16,
+          "relevant_chunks": [
+            16
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 7,
+              "chunk_index": 16
+            },
+            {
+              "document_type": "employee_handbook",
+              "page_number": 6,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 13
+            },
+            {
+              "chunk_index": 2,
+              "page_number": 2,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.789999971166253
+        },
+        {
+          "case_id": "handbook-q12",
+          "question": "What is the principle governing employee permissions to internal systems?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 14,
+          "relevant_chunks": [
+            14,
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 2,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 2
+            },
+            {
+              "page_number": 11,
+              "chunk_index": 23,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 4,
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 10.670125018805265
+        },
+        {
+          "case_id": "handbook-q13",
+          "question": "What must an incident review document after a serious service disruption?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 18,
+          "relevant_chunks": [
+            18,
+            26,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 18,
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 17,
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 12,
+              "chunk_index": 27
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.399417020380497
+        },
+        {
+          "case_id": "handbook-q14",
+          "question": "Which process should employees use to request planned time off?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "chunk_index": 5,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 6,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 4
+            },
+            {
+              "document_type": "employee_handbook",
+              "page_number": 3,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 4
+            }
+          ],
+          "rank": null,
+          "hit": false,
+          "latency_ms": 11.139624984934926
+        },
+        {
+          "case_id": "handbook-q15",
+          "question": "How long do employees generally have to file a business expense claim?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 10,
+              "page_number": 5
+            },
+            {
+              "page_number": 5,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 9
+            },
+            {
+              "document_type": "employee_handbook",
+              "page_number": 12,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 26
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.748500004410744
+        },
+        {
+          "case_id": "handbook-q16",
+          "question": "What should happen to access rights when someone changes teams?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 23,
+          "relevant_chunks": [
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook",
+              "chunk_index": 23
+            },
+            {
+              "chunk_index": 14,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 6
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 11,
+              "chunk_index": 24
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.06841694470495
+        },
+        {
+          "case_id": "handbook-q17",
+          "question": "Is it acceptable to put company credentials directly into a Git repository?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "page_number": 12,
+              "chunk_index": 26,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 6,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 12
+            },
+            {
+              "page_number": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 11
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 9.794916957616806
+        },
+        {
+          "case_id": "handbook-q18",
+          "question": "What ownership roles should every production service have?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 1,
+          "relevant_chunks": [
+            1,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 2,
+              "chunk_index": 2
+            },
+            {
+              "chunk_index": 26,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 12
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 2,
+              "chunk_index": 1,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 45.79041700344533
+        },
+        {
+          "case_id": "handbook-q19",
+          "question": "What should employees do when they suspect their credentials have been exposed?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 13,
+          "relevant_chunks": [
+            13
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 13,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 6
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 12,
+              "page_number": 6
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 26,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.480665951035917
+        },
+        {
+          "case_id": "handbook-q20",
+          "question": "What information should be communicated before planned service maintenance?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 20,
+          "relevant_chunks": [
+            20
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 20,
+              "page_number": 9,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 19,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 9
+            },
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 18,
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 43.33333298563957
+        }
+      ]
+    },
+    "BM25-only": {
+      "hit_rate_at_k": 0.85,
+      "mrr_at_k": 0.7,
+      "average_latency_ms": 0.07076875190250576,
+      "p95_latency_ms": 0.08179096039384604,
+      "cases": [
+        {
+          "case_id": "handbook-q01",
+          "question": "What is the yearly vacation allowance for a permanent full-time staff member?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 6,
+          "relevant_chunks": [
+            6,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 6,
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.08179096039384604
+        },
+        {
+          "case_id": "handbook-q02",
+          "question": "During which hours should colleagues generally be available to work together?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 3,
+          "relevant_chunks": [
+            3
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 5,
+              "page_number": 3
+            },
+            {
+              "chunk_index": 4,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "chunk_index": 3
+            }
+          ],
+          "rank": 3,
+          "hit": true,
+          "latency_ms": 0.07091695442795753
+        },
+        {
+          "case_id": "handbook-q03",
+          "question": "Where must engineers submit code changes before they become production changes?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 15,
+          "relevant_chunks": [
+            15
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 15,
+              "page_number": 7,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 9,
+              "page_number": 5
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.06975000724196434
+        },
+        {
+          "case_id": "handbook-q04",
+          "question": "What is the first response expected when a critical production incident occurs?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 17,
+          "relevant_chunks": [
+            17
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 17,
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 18,
+              "document_type": "employee_handbook",
+              "page_number": 8
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.08050003089010715
+        },
+        {
+          "case_id": "handbook-q05",
+          "question": "What details help the engineering team investigate an escalated customer problem?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 19,
+          "relevant_chunks": [
+            19
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "chunk_index": 3
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": null,
+          "hit": false,
+          "latency_ms": 0.0860830768942833
+        },
+        {
+          "case_id": "handbook-q06",
+          "question": "What is the reporting procedure if a work-issued computer goes missing?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 25,
+          "relevant_chunks": [
+            13,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "chunk_index": 24,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 10,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 22,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.0813750084489584
+        },
+        {
+          "case_id": "handbook-q07",
+          "question": "How should a developer store secrets used by a production application?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 7,
+              "document_type": "employee_handbook",
+              "chunk_index": 16,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 0.07512501906603575
+        },
+        {
+          "case_id": "handbook-q08",
+          "question": "What safeguards apply when modifying database schemas?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 27,
+          "relevant_chunks": [
+            16,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "page_number": 6,
+              "chunk_index": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 7,
+              "document_type": "employee_handbook",
+              "chunk_index": 16,
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 3,
+          "hit": true,
+          "latency_ms": 0.046042026951909065
+        },
+        {
+          "case_id": "handbook-q09",
+          "question": "Can an employee carry unused vacation days into the following year?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            8
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 7,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "chunk_index": 8,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.08133403025567532
+        },
+        {
+          "case_id": "handbook-q10",
+          "question": "What should be done before reserving travel for a business trip?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 10
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 9,
+              "page_number": 5
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.07133290637284517
+        },
+        {
+          "case_id": "handbook-q11",
+          "question": "How should application logs balance debugging needs with confidentiality?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 16,
+          "relevant_chunks": [
+            16
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 7,
+              "document_type": "employee_handbook",
+              "chunk_index": 16,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.06429199129343033
+        },
+        {
+          "case_id": "handbook-q12",
+          "question": "What is the principle governing employee permissions to internal systems?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 14,
+          "relevant_chunks": [
+            14,
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 1,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 2,
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 11,
+              "document_type": "employee_handbook",
+              "chunk_index": 23,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 0.06441702134907246
+        },
+        {
+          "case_id": "handbook-q13",
+          "question": "What must an incident review document after a serious service disruption?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 18,
+          "relevant_chunks": [
+            18,
+            26,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 18,
+              "document_type": "employee_handbook",
+              "page_number": 8
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 17,
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.06937503349035978
+        },
+        {
+          "case_id": "handbook-q14",
+          "question": "Which process should employees use to request planned time off?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 6,
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 9,
+              "chunk_index": 20,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 3,
+          "hit": true,
+          "latency_ms": 0.06508291698992252
+        },
+        {
+          "case_id": "handbook-q15",
+          "question": "How long do employees generally have to file a business expense claim?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 9,
+              "page_number": 5
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.07491698488593102
+        },
+        {
+          "case_id": "handbook-q16",
+          "question": "What should happen to access rights when someone changes teams?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 23,
+          "relevant_chunks": [
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 11,
+              "document_type": "employee_handbook",
+              "chunk_index": 23,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "page_number": 9,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 19,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.07066596299409866
+        },
+        {
+          "case_id": "handbook-q17",
+          "question": "Is it acceptable to put company credentials directly into a Git repository?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 6,
+              "chunk_index": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "chunk_index": 13
+            }
+          ],
+          "rank": null,
+          "hit": false,
+          "latency_ms": 0.07554201874881983
+        },
+        {
+          "case_id": "handbook-q18",
+          "question": "What ownership roles should every production service have?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 1,
+          "relevant_chunks": [
+            1,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 1,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 2,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.05295802839100361
+        },
+        {
+          "case_id": "handbook-q19",
+          "question": "What should employees do when they suspect their credentials have been exposed?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 13,
+          "relevant_chunks": [
+            13
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "chunk_index": 24,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": null,
+          "hit": false,
+          "latency_ms": 0.07458403706550598
+        },
+        {
+          "case_id": "handbook-q20",
+          "question": "What information should be communicated before planned service maintenance?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 20,
+          "relevant_chunks": [
+            20
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 9,
+              "chunk_index": 20,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 0.05929102189838886
+        }
+      ]
+    },
+    "Hybrid (RRF)": {
+      "hit_rate_at_k": 0.95,
+      "mrr_at_k": 0.85,
+      "average_latency_ms": 10.446585563477129,
+      "p95_latency_ms": 10.885875090025365,
+      "cases": [
+        {
+          "case_id": "handbook-q01",
+          "question": "What is the yearly vacation allowance for a permanent full-time staff member?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 6,
+          "relevant_chunks": [
+            6,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "chunk_index": 6
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 4,
+              "page_number": 3
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.240125004202127
+        },
+        {
+          "case_id": "handbook-q02",
+          "question": "During which hours should colleagues generally be available to work together?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 3,
+          "relevant_chunks": [
+            3
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 5,
+              "page_number": 3,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 3,
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 4,
+              "page_number": 3,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 10.610416997224092
+        },
+        {
+          "case_id": "handbook-q03",
+          "question": "Where must engineers submit code changes before they become production changes?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 15,
+          "relevant_chunks": [
+            15
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 7,
+              "chunk_index": 15,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "chunk_index": 26,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 7,
+              "chunk_index": 16,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.496083996258676
+        },
+        {
+          "case_id": "handbook-q04",
+          "question": "What is the first response expected when a critical production incident occurs?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 17,
+          "relevant_chunks": [
+            17
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 8,
+              "chunk_index": 18
+            },
+            {
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 17
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "document_type": "employee_handbook",
+              "chunk_index": 5
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 10.885875090025365
+        },
+        {
+          "case_id": "handbook-q05",
+          "question": "What details help the engineering team investigate an escalated customer problem?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 19,
+          "relevant_chunks": [
+            19
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 19,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 9
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "chunk_index": 3
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 8,
+              "document_type": "employee_handbook",
+              "chunk_index": 18
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.61912509612739
+        },
+        {
+          "case_id": "handbook-q06",
+          "question": "What is the reporting procedure if a work-issued computer goes missing?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 25,
+          "relevant_chunks": [
+            13,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 9,
+              "chunk_index": 20,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 24,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 9.781957953236997
+        },
+        {
+          "case_id": "handbook-q07",
+          "question": "How should a developer store secrets used by a production application?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "chunk_index": 26,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 7,
+              "chunk_index": 16
+            },
+            {
+              "page_number": 2,
+              "document_type": "employee_handbook",
+              "chunk_index": 2,
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.648833005689085
+        },
+        {
+          "case_id": "handbook-q08",
+          "question": "What safeguards apply when modifying database schemas?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 27,
+          "relevant_chunks": [
+            16,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 16,
+              "page_number": 7
+            },
+            {
+              "chunk_index": 12,
+              "document_type": "employee_handbook",
+              "page_number": 6,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 27,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.509542073123157
+        },
+        {
+          "case_id": "handbook-q09",
+          "question": "Can an employee carry unused vacation days into the following year?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            8
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 8,
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "document_type": "employee_handbook",
+              "chunk_index": 6
+            },
+            {
+              "chunk_index": 7,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.594749939627945
+        },
+        {
+          "case_id": "handbook-q10",
+          "question": "What should be done before reserving travel for a business trip?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 10,
+              "page_number": 5
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 9,
+              "page_number": 5
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "chunk_index": 4
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.727459099143744
+        },
+        {
+          "case_id": "handbook-q11",
+          "question": "How should application logs balance debugging needs with confidentiality?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 16,
+          "relevant_chunks": [
+            16
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 16,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 7
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 6,
+              "chunk_index": 13
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.494332993403077
+        },
+        {
+          "case_id": "handbook-q12",
+          "question": "What is the principle governing employee permissions to internal systems?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 14,
+          "relevant_chunks": [
+            14,
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 11,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 23
+            },
+            {
+              "chunk_index": 2,
+              "page_number": 2,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 1,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 2,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.389957926236093
+        },
+        {
+          "case_id": "handbook-q13",
+          "question": "What must an incident review document after a serious service disruption?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 18,
+          "relevant_chunks": [
+            18,
+            26,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 18,
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 8,
+              "document_type": "employee_handbook",
+              "chunk_index": 17
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.233209002763033
+        },
+        {
+          "case_id": "handbook-q14",
+          "question": "Which process should employees use to request planned time off?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 6,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 9,
+              "chunk_index": 20,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": null,
+          "hit": false,
+          "latency_ms": 10.238833958283067
+        },
+        {
+          "case_id": "handbook-q15",
+          "question": "How long do employees generally have to file a business expense claim?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 26,
+              "page_number": 12,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 9,
+              "page_number": 5,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 10,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 5
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.910124983638525
+        },
+        {
+          "case_id": "handbook-q16",
+          "question": "What should happen to access rights when someone changes teams?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 23,
+          "relevant_chunks": [
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 23,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 11
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 14,
+              "page_number": 6,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.288042016327381
+        },
+        {
+          "case_id": "handbook-q17",
+          "question": "Is it acceptable to put company credentials directly into a Git repository?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 12
+            },
+            {
+              "page_number": 12,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 26,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 9.263542015105486
+        },
+        {
+          "case_id": "handbook-q18",
+          "question": "What ownership roles should every production service have?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 1,
+          "relevant_chunks": [
+            1,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 2,
+              "chunk_index": 1
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 12,
+              "chunk_index": 26
+            },
+            {
+              "page_number": 2,
+              "document_type": "employee_handbook",
+              "chunk_index": 2,
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.643040994182229
+        },
+        {
+          "case_id": "handbook-q19",
+          "question": "What should employees do when they suspect their credentials have been exposed?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 13,
+          "relevant_chunks": [
+            13
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 12,
+              "chunk_index": 26
+            },
+            {
+              "chunk_index": 13,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "page_number": 6
+            },
+            {
+              "chunk_index": 12,
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 10.546084027737379
+        },
+        {
+          "case_id": "handbook-q20",
+          "question": "What information should be communicated before planned service maintenance?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 20,
+          "relevant_chunks": [
+            20
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "page_number": 9,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 20
+            },
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 19,
+              "page_number": 9,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25,
+              "document_type": "employee_handbook",
+              "page_number": 12
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 10.810375097207725
+        }
+      ]
+    },
+    "Hybrid + Cross-Encoder": {
+      "hit_rate_at_k": 1.0,
+      "mrr_at_k": 0.975,
+      "average_latency_ms": 62.53662692033686,
+      "p95_latency_ms": 97.25429199170321,
+      "cases": [
+        {
+          "case_id": "handbook-q01",
+          "question": "What is the yearly vacation allowance for a permanent full-time staff member?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 6,
+          "relevant_chunks": [
+            6,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 6,
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 25,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "chunk_index": 7,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 52.841207943856716
+        },
+        {
+          "case_id": "handbook-q02",
+          "question": "During which hours should colleagues generally be available to work together?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 3,
+          "relevant_chunks": [
+            3
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 3,
+              "page_number": 3
+            },
+            {
+              "chunk_index": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "document_type": "employee_handbook"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 3,
+              "document_type": "employee_handbook",
+              "chunk_index": 4
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 47.09295800421387
+        },
+        {
+          "case_id": "handbook-q03",
+          "question": "Where must engineers submit code changes before they become production changes?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 15,
+          "relevant_chunks": [
+            15
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 7,
+              "chunk_index": 15,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 2,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 2
+            },
+            {
+              "page_number": 12,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 26,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 42.72595897782594
+        },
+        {
+          "case_id": "handbook-q04",
+          "question": "What is the first response expected when a critical production incident occurs?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 17,
+          "relevant_chunks": [
+            17
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 8,
+              "document_type": "employee_handbook",
+              "chunk_index": 17,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 10,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 21
+            },
+            {
+              "page_number": 8,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 18
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 86.38904092367738
+        },
+        {
+          "case_id": "handbook-q05",
+          "question": "What details help the engineering team investigate an escalated customer problem?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 19,
+          "relevant_chunks": [
+            19
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 9,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 19,
+              "document_type": "employee_handbook"
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 18,
+              "page_number": 8
+            },
+            {
+              "chunk_index": 2,
+              "page_number": 2,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 41.47591697983444
+        },
+        {
+          "case_id": "handbook-q06",
+          "question": "What is the reporting procedure if a work-issued computer goes missing?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 25,
+          "relevant_chunks": [
+            13,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "page_number": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 11
+            },
+            {
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 13
+            },
+            {
+              "page_number": 10,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 22,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 2,
+          "hit": true,
+          "latency_ms": 83.31829099915922
+        },
+        {
+          "case_id": "handbook-q07",
+          "question": "How should a developer store secrets used by a production application?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "chunk_index": 26,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 15,
+              "document_type": "employee_handbook",
+              "page_number": 7
+            },
+            {
+              "page_number": 6,
+              "chunk_index": 12,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 38.89512491878122
+        },
+        {
+          "case_id": "handbook-q08",
+          "question": "What safeguards apply when modifying database schemas?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 27,
+          "relevant_chunks": [
+            16,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 7,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 16
+            },
+            {
+              "chunk_index": 27,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 12,
+              "page_number": 6,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 80.01441706437618
+        },
+        {
+          "case_id": "handbook-q09",
+          "question": "Can an employee carry unused vacation days into the following year?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            8
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 7,
+              "document_type": "employee_handbook"
+            },
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "chunk_index": 8
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 6,
+              "page_number": 4,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 97.25429199170321
+        },
+        {
+          "case_id": "handbook-q10",
+          "question": "What should be done before reserving travel for a business trip?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 10,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 24,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 4,
+              "chunk_index": 7,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 92.56916597951204
+        },
+        {
+          "case_id": "handbook-q11",
+          "question": "How should application logs balance debugging needs with confidentiality?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 16,
+          "relevant_chunks": [
+            16
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 7,
+              "chunk_index": 16
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 12,
+              "page_number": 6
+            },
+            {
+              "page_number": 6,
+              "chunk_index": 13,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 47.09695791825652
+        },
+        {
+          "case_id": "handbook-q12",
+          "question": "What is the principle governing employee permissions to internal systems?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 14,
+          "relevant_chunks": [
+            14,
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "page_number": 11,
+              "chunk_index": 23,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 14,
+              "page_number": 6,
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 6,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 13,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 50.903416937217116
+        },
+        {
+          "case_id": "handbook-q13",
+          "question": "What must an incident review document after a serious service disruption?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 18,
+          "relevant_chunks": [
+            18,
+            26,
+            27
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 18,
+              "page_number": 8
+            },
+            {
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "chunk_index": 13,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 26,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 12,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 98.54054101742804
+        },
+        {
+          "case_id": "handbook-q14",
+          "question": "Which process should employees use to request planned time off?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 7,
+          "relevant_chunks": [
+            7,
+            25
+          ],
+          "retrieved_metadata": [
+            {
+              "chunk_index": 7,
+              "document_type": "employee_handbook",
+              "page_number": 4,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 25
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 6,
+              "page_number": 4
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 49.89795899018645
+        },
+        {
+          "case_id": "handbook-q15",
+          "question": "How long do employees generally have to file a business expense claim?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 10,
+          "relevant_chunks": [
+            10,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 10,
+              "page_number": 5,
+              "document_type": "employee_handbook"
+            },
+            {
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "chunk_index": 26,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "page_number": 5,
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 9,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 94.09491601400077
+        },
+        {
+          "case_id": "handbook-q16",
+          "question": "What should happen to access rights when someone changes teams?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 23,
+          "relevant_chunks": [
+            23
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 23,
+              "page_number": 11
+            },
+            {
+              "page_number": 2,
+              "chunk_index": 2,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 21,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 10,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 41.40183294657618
+        },
+        {
+          "case_id": "handbook-q17",
+          "question": "Is it acceptable to put company credentials directly into a Git repository?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 26,
+          "relevant_chunks": [
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 12,
+              "chunk_index": 26
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 6,
+              "chunk_index": 12,
+              "document_type": "employee_handbook"
+            },
+            {
+              "chunk_index": 24,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 52.07420792430639
+        },
+        {
+          "case_id": "handbook-q18",
+          "question": "What ownership roles should every production service have?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 1,
+          "relevant_chunks": [
+            1,
+            26
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "chunk_index": 1,
+              "document_type": "employee_handbook",
+              "page_number": 2
+            },
+            {
+              "chunk_index": 26,
+              "page_number": 12,
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "document_type": "employee_handbook",
+              "chunk_index": 2,
+              "page_number": 2
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 50.30595895368606
+        },
+        {
+          "case_id": "handbook-q19",
+          "question": "What should employees do when they suspect their credentials have been exposed?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 13,
+          "relevant_chunks": [
+            13
+          ],
+          "retrieved_metadata": [
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 6,
+              "chunk_index": 13,
+              "document_type": "employee_handbook"
+            },
+            {
+              "document_type": "employee_handbook",
+              "chunk_index": 12,
+              "page_number": 6,
+              "source": "rag_practice_employee_handbook.pdf"
+            },
+            {
+              "chunk_index": 24,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 11,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 52.04595800023526
+        },
+        {
+          "case_id": "handbook-q20",
+          "question": "What information should be communicated before planned service maintenance?",
+          "expected_source": "rag_practice_employee_handbook.pdf",
+          "expected_chunk": 20,
+          "relevant_chunks": [
+            20
+          ],
+          "retrieved_metadata": [
+            {
+              "document_type": "employee_handbook",
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 9,
+              "chunk_index": 20
+            },
+            {
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 6,
+              "document_type": "employee_handbook",
+              "chunk_index": 13
+            },
+            {
+              "chunk_index": 7,
+              "source": "rag_practice_employee_handbook.pdf",
+              "page_number": 4,
+              "document_type": "employee_handbook"
+            }
+          ],
+          "rank": 1,
+          "hit": true,
+          "latency_ms": 51.79441592190415
+        }
+      ]
+    }
+  }
+}

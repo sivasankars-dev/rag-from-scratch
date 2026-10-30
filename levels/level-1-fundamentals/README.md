@@ -8,9 +8,9 @@ Run from the repository root with this level selected:
 
 ```bash
 PYTHONPATH=levels/level-1-fundamentals uv run python -m scripts.run_evaluation_dataset
-uv run python -m pytest
+PYTHONPATH=levels/level-1-fundamentals uv run python -m pytest levels/level-1-fundamentals/tests -q
 ```
 
-For interactive Python or individual scripts, set `PYTHONPATH=levels/level-1-fundamentals`. Root pytest configuration supplies that path automatically. Shared PDFs, evaluation data, and generated Chroma files remain under root `data/`; no database was duplicated.
+For interactive Python or individual scripts, set `PYTHONPATH=levels/level-1-fundamentals`. Pass the level path and test directory explicitly; root pytest configuration does not select Level 1. Shared PDFs, evaluation data, and generated Chroma files remain under root `data/`; no database was duplicated.
 
-Step 13 is a separate chunker, Step 14 implements Hit Rate and MRR, and Steps 15–17 explain metrics, failure cases, and generation concepts. Later techniques remain conceptual. Continue to [Level 2](../level-2-practical-rag/README.md), which currently contains placeholders only.
+Step 13 is a separate chunker, Step 14 implements Hit Rate and MRR, and Steps 15–17 explain metrics, failure cases, and generation concepts. Later techniques remain conceptual. Continue to [Level 2](../level-2-practical-rag/README.md), whose practical RAG implementation is complete.

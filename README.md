@@ -2,7 +2,7 @@
 
 Learn RAG by building it in independent levels, from fundamentals to production engineering.
 
-**Level 1 — RAG Fundamentals: Steps 1–17 complete. Level 2 is next.** Completion describes each learning checkpoint's scope; it does not mean every discussed technique is implemented.
+**Levels 1–3 learning implementations complete. Level 4 — Production RAG Engineering is next; implementation has not started.** Completion refers to the implemented learning scope, not production readiness or exhaustive evaluation.
 
 ## Learning philosophy
 
@@ -32,8 +32,8 @@ levels/
 │   ├── scripts/        Manual run_* demonstrations
 │   ├── tests/          Automated checks
 │   └── docs/           Steps 1–17 and historical validation notes
-├── level-2-practical-rag/   Next; placeholders only
-├── level-3-advanced-rag/    Planned; placeholders only
+├── level-2-practical-rag/   Implemented practical pipeline and API
+├── level-3-advanced-rag/    Implemented advanced retrieval topics
 └── level-4-production-rag/ Planned; placeholders only
 final-project/
 ├── app/
@@ -49,14 +49,14 @@ pyproject.toml         Shared environment and test configuration
 uv.lock               Locked dependencies
 ```
 
-Every level has `services/`, `scripts/`, `tests/`, and `docs/`. Level 1 additionally keeps the HTTP application in `app/`. No learning implementation is copied into the future levels or final project. The sample PDFs and existing Chroma data stay in the root `data/` directory.
+Every level has `services/`, `scripts/`, `tests/`, and `docs/`. Levels 1 and 2 also contain an HTTP application in `app/`. Levels 2 and 3 have their own evaluation data under their level directories. Level 4 and the final project remain reserved. The sample PDFs and existing Chroma data stay in the root `data/` directory.
 
 | Level | Status | Guide |
 | --- | --- | --- |
 | 1 — RAG Fundamentals | Steps 1–17 complete | [Level 1](levels/level-1-fundamentals/README.md) |
-| 2 — Practical RAG Engineering | Next | [Roadmap](levels/level-2-practical-rag/README.md) |
-| 3 — Advanced RAG | Planned | [Roadmap](levels/level-3-advanced-rag/README.md) |
-| 4 — Production RAG Engineering | Planned | [Roadmap](levels/level-4-production-rag/README.md) |
+| 2 — Practical RAG Engineering | Learning implementation complete | [Roadmap](levels/level-2-practical-rag/README.md) |
+| 3 — Advanced RAG | Learning implementation complete; broader evaluation remains | [Roadmap](levels/level-3-advanced-rag/README.md) |
+| 4 — Production RAG Engineering | Next; implementation pending | [Roadmap](levels/level-4-production-rag/README.md) |
 | Final Project | Reserved; not implemented | [Plan](final-project/README.md) |
 
 ## Level 1 learning sequence
@@ -85,7 +85,7 @@ Older chapters retain their checkpoint explanations and measured results. Paths 
 
 ## Environment and imports
 
-Run commands from the **repository root**. The verified interpreter is Python 3.12.3; dependencies have not been upgraded for this reorganization.
+Run commands from the **repository root**. The project requires Python 3.12 or newer; earlier local validation used Python 3.12.3. Use the committed lockfile.
 
 ```bash
 uv sync --locked --python 3.12.3
@@ -143,15 +143,36 @@ The manual `run_cost_calculator_build_demo` still calls an outdated calculator i
 ## Tests
 
 ```bash
-uv run python -m pytest
+PYTHONPATH=levels/level-1-fundamentals uv run python -m pytest levels/level-1-fundamentals/tests -q
 ```
 
-Root pytest configuration selects the Level 1 import path and test directory. To run one file:
+Root pytest configuration currently selects `tests/` and `.`; it does not select a learning level. Use explicit paths as shown below. To run one file:
 
 ```bash
-uv run python -m pytest levels/level-1-fundamentals/tests/test_better_chunker.py -v
+PYTHONPATH=levels/level-1-fundamentals uv run python -m pytest levels/level-1-fundamentals/tests/test_better_chunker.py -v
 ```
 
 After the embedding model is cached, use `HF_HUB_OFFLINE=1` before the command for offline testing. Migration validation: **22 passed, 1 dependency warning**. The suite covers the original chunker, PDF/upload behavior, vector storage, retrieval, BetterChunker, and dataset checks. It does not yet have assertions for every conceptual topic or the paid generation path. A Starlette/AnyIO dependency deprecation warning is known.
 
-Levels 2–4 and the final project will receive their own implementations and tests as learning progresses.
+## Levels 2 and 3
+
+[Level 2](levels/level-2-practical-rag/README.md) implements overlap chunking, metadata filtering, hybrid search, reranking, query rewriting, retrieval evaluation, grounding controls, citations, and a FastAPI answer endpoint. The API is a learning implementation; resource lifecycle, security, and scaling remain production work.
+
+[Level 3](levels/level-3-advanced-rag/README.md) implements multi-query, parent-child, contextual, BM25/vector hybrid retrieval, cross-encoder reranking, document-aware chunking, bounded agentic RAG, Neo4j Graph RAG, multimodal ingestion, and token-budgeted long-context generation.
+
+Run their suites separately from the repository root:
+
+```bash
+PYTHONPATH=levels/level-2-practical-rag uv run pytest levels/level-2-practical-rag/tests -q
+PYTHONPATH=levels/level-3-advanced-rag uv run pytest levels/level-3-advanced-rag/tests -q
+```
+
+Commands with relative data paths may require a specific working directory; follow each level's guide. Do not combine multiple levels on PYTHONPATH.
+
+See the [Level 3 evaluation checkpoint](levels/level-3-advanced-rag/docs/13-level-3-evaluation.md) for the reviewed 20-question, 28-chunk development benchmark and saved reports. Its reranked retrieval result is not an answer-quality or production-scale guarantee. Other retrieval approaches and generated answers still need broader evaluation.
+
+## Next: Level 4
+
+Follow the [production roadmap](levels/level-4-production-rag/README.md). The first milestone is a production API foundation and measured baseline, followed by observability, tenant isolation, reliable ingestion, caching, optimization, evaluation pipelines, failure recovery, distributed retrieval, and deployment/load testing. Million-document and high-concurrency support are future measured targets.
+
+The final project remains reserved and unimplemented.

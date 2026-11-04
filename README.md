@@ -2,7 +2,7 @@
 
 Learn RAG by building it in independent levels, from fundamentals to production engineering.
 
-**Levels 1–3 learning implementations complete. Level 4 — Production RAG Engineering is next; implementation has not started.** Completion refers to the implemented learning scope, not production readiness or exhaustive evaluation.
+**Levels 1–3 learning implementations complete. Level 4 — Production RAG Engineering is in progress.** Completion refers to the implemented learning scope, not production readiness or exhaustive evaluation.
 
 ## Learning philosophy
 
@@ -34,7 +34,7 @@ levels/
 │   └── docs/           Steps 1–17 and historical validation notes
 ├── level-2-practical-rag/   Implemented practical pipeline and API
 ├── level-3-advanced-rag/    Implemented advanced retrieval topics
-└── level-4-production-rag/ Planned; placeholders only
+└── level-4-production-rag/ In progress; API, document access and version publishing
 final-project/
 ├── app/
 ├── scripts/
@@ -49,14 +49,14 @@ pyproject.toml         Shared environment and test configuration
 uv.lock               Locked dependencies
 ```
 
-Every level has `services/`, `scripts/`, `tests/`, and `docs/`. Levels 1 and 2 also contain an HTTP application in `app/`. Levels 2 and 3 have their own evaluation data under their level directories. Level 4 and the final project remain reserved. The sample PDFs and existing Chroma data stay in the root `data/` directory.
+Every level has `services/`, `scripts/`, `tests/`, and `docs/`. Levels 1 and 2 also contain an HTTP application in `app/`. Levels 2 and 3 have their own evaluation data under their level directories. Level 4 is in progress and includes its own `app/`; the final project remains reserved. The sample PDFs and existing Chroma data stay in the root `data/` directory.
 
 | Level | Status | Guide |
 | --- | --- | --- |
 | 1 — RAG Fundamentals | Steps 1–17 complete | [Level 1](levels/level-1-fundamentals/README.md) |
 | 2 — Practical RAG Engineering | Learning implementation complete | [Roadmap](levels/level-2-practical-rag/README.md) |
 | 3 — Advanced RAG | Learning implementation complete; broader evaluation remains | [Roadmap](levels/level-3-advanced-rag/README.md) |
-| 4 — Production RAG Engineering | Next; implementation pending | [Roadmap](levels/level-4-production-rag/README.md) |
+| 4 — Production RAG Engineering | In progress | [Roadmap](levels/level-4-production-rag/README.md) |
 | Final Project | Reserved; not implemented | [Plan](final-project/README.md) |
 
 ## Level 1 learning sequence
@@ -171,8 +171,10 @@ Commands with relative data paths may require a specific working directory; foll
 
 See the [Level 3 evaluation checkpoint](levels/level-3-advanced-rag/docs/13-level-3-evaluation.md) for the reviewed 20-question, 28-chunk development benchmark and saved reports. Its reranked retrieval result is not an answer-quality or production-scale guarantee. Other retrieval approaches and generated answers still need broader evaluation.
 
-## Next: Level 4
+## Level 4 — In progress
 
-Follow the [production roadmap](levels/level-4-production-rag/README.md). The first milestone is a production API foundation and measured baseline, followed by observability, tenant isolation, reliable ingestion, caching, optimization, evaluation pipelines, failure recovery, distributed retrieval, and deployment/load testing. Million-document and high-concurrency support are future measured targets.
+Level 4 implements a FastAPI embedding API foundation with startup checks, request validation, health/readiness endpoints and basic logging. PostgreSQL models and migrations track users, tenants, memberships, owner-scoped documents and document versions. Read queries enforce active user/tenant/membership status, ownership and soft-deletion checks. An internal helper publishes READY versions by updating the active-version pointer; authorized lookup returns that pointer. See the [document access and versioning guide](levels/level-4-production-rag/docs/03-document-access-and-versioning.md) for setup, transaction responsibilities and current limits.
+
+Follow the [production roadmap](levels/level-4-production-rag/README.md) for later work. Automatic upload/version processing, PDF ingestion, vector retrieval and broader reliability/load validation remain planned. Million-document and high-concurrency capacity are not demonstrated by the current checkpoint.
 
 The final project remains reserved and unimplemented.

@@ -1,6 +1,11 @@
 from uuid import UUID
 from fastapi.testclient import TestClient
 from app.main import create_app
+from contextlib import nullcontext
+
+
+def fake_database_resources():
+    return nullcontext((None, None))
 
 class FakeEmbeddingService:
     def embed_text(self, text):
@@ -21,6 +26,7 @@ class FailsAfterWarmupEmbeddingService:
 
 app = create_app(
     embedding_service_factory=FakeEmbeddingService,
+    database_resources_factory=fake_database_resources,
 )
 
 def test_rejects_whitespace_texts():
@@ -67,6 +73,7 @@ def test_valid_input_text():
 def test_returns_503_when_embedding_generation_fails():
     app = create_app(
         embedding_service_factory=FailsAfterWarmupEmbeddingService,
+        database_resources_factory=fake_database_resources,
     )
 
     with TestClient(app) as client:
@@ -83,6 +90,7 @@ def test_returns_503_when_embedding_generation_fails():
 def test_request_ids_are_valid_and_unique():
     app = create_app(
         embedding_service_factory=FakeEmbeddingService,
+        database_resources_factory=fake_database_resources,
     )
 
     with TestClient(app) as client:

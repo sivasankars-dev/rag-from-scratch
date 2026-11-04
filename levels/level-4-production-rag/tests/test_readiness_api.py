@@ -2,6 +2,11 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
+from contextlib import nullcontext
+
+
+def fake_database_resources():
+    return nullcontext((None, None))
 
 class FailingEmbeddingService:
     def embed_text(self, text):
@@ -16,6 +21,7 @@ class FakeEmbeddingService:
 def test_health_returns_ok():
     app = create_app(
         embedding_service_factory=FakeEmbeddingService,
+        database_resources_factory=fake_database_resources,
     )
 
     with TestClient(app) as client:
@@ -28,6 +34,7 @@ def test_health_returns_ok():
 def test_ready_when_embedding_service_exists():
     app = create_app(
         embedding_service_factory=FakeEmbeddingService,
+        database_resources_factory=fake_database_resources,
     )
 
     with TestClient(app) as client:
@@ -40,6 +47,7 @@ def test_ready_when_embedding_service_exists():
 def test_not_ready_when_embedding_service_is_missing():
     app = create_app(
         embedding_service_factory=FakeEmbeddingService,
+        database_resources_factory=fake_database_resources,
     )
 
     with TestClient(app) as client:
@@ -57,6 +65,7 @@ def test_not_ready_when_embedding_service_is_missing():
 def test_startup_fails_when_model_warmup_fails():
     app = create_app(
         embedding_service_factory=FailingEmbeddingService,
+        database_resources_factory=fake_database_resources,
     )
 
     with pytest.raises(RuntimeError, match="Model warm-up failed"):

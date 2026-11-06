@@ -1,13 +1,13 @@
 import uuid
 
-from app.config import load_database_url
+from app.config import load_test_database_url
 from app.database import create_db_engine, create_session_factory
 from app.models import Document, Membership, Tenant, User
 from app.repositories.document import get_accessible_document
 
 
 def test_only_owner_can_read_document_within_tenant():
-    engine = create_db_engine(load_database_url())
+    engine = create_db_engine(load_test_database_url())
 
     try:
         session_factory = create_session_factory(engine)

@@ -3,21 +3,26 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.document import Document, DocumentVersion
 from app.models import Membership, Tenant, User
+from app.repositories.document import get_accessible_document
 
 def publish_document_version(
     session: Session,
     *,
+    tenant_id: UUID,
+    user_id: UUID,
     document_id: UUID,
     version_id: UUID,
 ) -> None:
-    document = session.scalar(
-        select(Document)
-        .where(Document.id == document_id, Document.deleted_at.is_(None))
-        .with_for_update()
-        .execution_options(populate_existing=True)
+    document = get_accessible_document(
+        session,
+        document_id=document_id,
+        tenant_id=tenant_id,
+        user_id=user_id,
+        for_update=True,
     )
+
     if document is None:
-        raise ValueError("Document not found")
+        raise ValueError("Access denied")
 
     version = session.scalar(
         select(DocumentVersion)

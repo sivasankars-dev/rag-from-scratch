@@ -12,6 +12,7 @@ def get_accessible_document(
     document_id: UUID,
     tenant_id: UUID,
     user_id: UUID,
+    for_update: bool = False,
 ) -> Document | None:
     statement = (
         select(Document)
@@ -34,5 +35,10 @@ def get_accessible_document(
             Tenant.status == "ACTIVE",
         )
     )
+
+    if for_update:
+        statement = statement.with_for_update(
+            of=Document
+        ).execution_options(populate_existing=True)
 
     return session.execute(statement).scalar_one_or_none()

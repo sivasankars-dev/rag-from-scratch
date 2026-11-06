@@ -3,8 +3,23 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import create_engine, pool
 
-from app.config import load_database_url
+from app.config import load_database_url, load_test_database_url
 from app.models import Base
+
+def get_migration_database_url() -> str:
+    database_target = context.get_x_argument(as_dictionary=True).get(
+        "database", "development"
+    )
+
+    if database_target == "test":
+        return load_test_database_url()
+
+    if database_target == "development":
+        return load_database_url()
+
+    raise ValueError(
+        f"Unknown migration database target: {database_target}"
+    )
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -40,7 +55,7 @@ def run_migrations_offline() -> None:
 
     """
     context.configure(
-        url=load_database_url(),
+        url=get_migration_database_url(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -54,7 +69,7 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     engine = create_engine(
-        load_database_url(),
+        get_migration_database_url(),
         poolclass=pool.NullPool,
         hide_parameters=True,
     )

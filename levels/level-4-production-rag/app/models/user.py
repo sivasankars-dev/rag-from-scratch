@@ -15,13 +15,6 @@ from app.models.base import Base
 class User(Base):
     __tablename__ = "users"
 
-    __table_args__ = (
-        CheckConstraint(
-            "status IN ('ACTIVE', 'DISABLED')",
-            name="ck_users_status",
-        ),
-    )
-
     id: Mapped[uuid.UUID] = mapped_column(
         primary_key=True,
         default=uuid.uuid4,

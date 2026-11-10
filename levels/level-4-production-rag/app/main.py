@@ -11,6 +11,7 @@ from app.config import load_settings
 from app.middleware import register_middleware
 from app.database import create_database_resources
 from app.dependencies import get_db_session
+from app.routers.auth import router as auth_router
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -24,6 +25,9 @@ def create_app(
 
         settings = load_settings()
         app.state.settings = settings
+        app.state.jwt_public_key = settings.jwt_public_key
+        app.state.jwt_issuer = settings.jwt_issuer
+        app.state.jwt_audience = settings.jwt_audience
 
         db_factory = database_resources_factory
         if db_factory is None:
@@ -71,6 +75,7 @@ def create_app(
     register_middleware(application)
 
     application.include_router(embedding_router)
+    application.include_router(auth_router)
 
     @application.get("/health")
     async def health():

@@ -578,3 +578,117 @@ def test_document_publication_stale_orm_read(two_session_factory):
             cleanup_session.execute(delete(Tenant).where(Tenant.id == tenant_id))
             cleanup_session.execute(delete(User).where(User.id == user_id))
             cleanup_session.commit()
+
+
+def test_published_version_visible_after_commit_in_new_session(
+    two_session_factory,
+):
+    user_id = uuid4()
+    tenant_id = uuid4()
+    document_id = uuid4()
+    version_id = uuid4()
+
+    try:
+        # STEP 1: Create test data and commit
+        with two_session_factory() as setup_session:
+            user = User(
+                id=user_id,
+                name="Siva",
+                email=f"{uuid4().hex}@example.com",
+            )
+            tenant = Tenant(
+                id=tenant_id,
+                name="Acme",
+            )
+            setup_session.add_all([user, tenant])
+            setup_session.flush()
+
+            membership = Membership(
+                tenant_id=tenant_id,
+                user_id=user_id,
+            )
+            setup_session.add(membership)
+            setup_session.flush()
+
+            document = Document(
+                id=document_id,
+                tenant_id=tenant_id,
+                owner_user_id=user_id,
+                title="handbook.pdf",
+            )
+            setup_session.add(document)
+            setup_session.flush()
+
+            version = DocumentVersion(
+                id=version_id,
+                document_id=document_id,
+                version_number=1,
+                status="READY",
+            )
+            setup_session.add(version)
+            setup_session.commit()
+
+        # STEP 2: Publish using a separate DB session
+        with two_session_factory() as publish_session:
+            publish_document_version(
+                publish_session,
+                tenant_id=tenant_id,
+                user_id=user_id,
+                document_id=document_id,
+                version_id=version_id,
+            )
+
+            publish_session.commit()
+
+        # STEP 3: Verify from a fresh DB session
+        with two_session_factory() as read_session:
+            published_document = read_session.get(
+                Document,
+                document_id,
+            )
+
+            assert published_document is not None
+            assert published_document.active_version_id == version_id
+
+            readable_version_id = get_readable_active_version_id(
+                read_session,
+                tenant_id=tenant_id,
+                user_id=user_id,
+                document_id=document_id,
+            )
+
+            assert readable_version_id == version_id
+
+    finally:
+        # STEP 4: Clean up committed test data
+        with two_session_factory() as cleanup_session:
+            document = cleanup_session.get(Document, document_id)
+
+            if document is not None:
+                document.active_version_id = None
+                cleanup_session.flush()
+
+            cleanup_session.execute(
+                delete(DocumentVersion).where(
+                    DocumentVersion.document_id == document_id
+                )
+            )
+            cleanup_session.execute(
+                delete(Document).where(
+                    Document.id == document_id
+                )
+            )
+            cleanup_session.execute(
+                delete(Membership).where(
+                    Membership.tenant_id == tenant_id,
+                    Membership.user_id == user_id,
+                )
+            )
+            cleanup_session.execute(
+                delete(Tenant).where(Tenant.id == tenant_id)
+            )
+            cleanup_session.execute(
+                delete(User).where(User.id == user_id)
+            )
+
+            cleanup_session.commit()

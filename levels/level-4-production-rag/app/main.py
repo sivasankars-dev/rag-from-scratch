@@ -5,13 +5,15 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException, Depends
 from sqlalchemy import text
 
-from app.routers.embedding import router as embedding_router
 from services.embedding_service import EmbeddingService
 from app.config import load_settings
 from app.middleware import register_middleware
 from app.database import create_database_resources
 from app.dependencies import get_db_session
+
+from app.routers.embedding import router as embedding_router
 from app.routers.auth import router as auth_router
+from app.routers.documents import router as documents_router
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -76,6 +78,7 @@ def create_app(
 
     application.include_router(embedding_router)
     application.include_router(auth_router)
+    application.include_router(documents_router)
 
     @application.get("/health")
     async def health():

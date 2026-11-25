@@ -1,4 +1,6 @@
 import uuid
+import io
+from uuid import UUID
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 
@@ -8,11 +10,15 @@ import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from fastapi.testclient import TestClient
+from sqlalchemy import select
 
 from app.config import load_test_database_url
 from app.database import create_db_engine
 from app.main import create_app
 from app.models import User, Tenant, Membership
+from app.models.document import Document, DocumentVersion
+from services.document_upload_service import persist_document_upload
+
 
 
 ISSUER = "https://auth.example.test"
@@ -23,6 +29,17 @@ class FakeEmbeddingService:
     def embed_text(self, text):
         return [0.1, 0.2, 0.3]
 
+class FailingStorage:
+    def __init__(self):
+        self.deleted_keys = []
+        self.save_attempted = False
+
+    def save(self, *, key, source):
+        self.save_attempted = True
+        raise RuntimeError("MinIO unavailable")
+
+    def delete(self, *, key):
+        self.deleted_keys.append(key)
 
 @pytest.fixture
 def auth_environment():
@@ -331,14 +348,44 @@ def test_active_tenant_member_can_upload_pdf(auth_environment):
             files=pdf_upload_files(content),
         )
 
+        data = response.json()
+
         assert response.status_code == 200
-        assert response.json() == {
-            "status": "validated",
-            "tenant_id": str(tenant.id),
-            "user_id": str(user.id),
-            "filename": "test.pdf",
-            "size_bytes": len(content),
-        }
+        assert data["status"] == "uploaded"
+        assert data["filename"] == "test.pdf"
+        assert data["tenant_id"] == str(tenant.id)
+        assert data["size_bytes"] == len(content)
+
+        document_id = UUID(data["document_id"])
+        version_id = UUID(data["version_id"])
+
+        assert document_id != version_id
+        document = session.execute(
+            select(Document).where(Document.id == document_id)
+        ).scalar_one()
+
+        version = session.execute(
+            select(DocumentVersion).where(DocumentVersion.id == version_id)
+        ).scalar_one()
+
+        assert document.tenant_id == tenant.id
+        assert document.owner_user_id == user.id
+        assert document.title == "test.pdf"
+
+        assert version.document_id == document.id
+        assert version.version_number == 1
+        assert version.status == "READY"
+        assert version.storage_key is not None
+
+        # Verify uploaded PDF in object storage
+        assert version.storage_key is not None
+
+        storage = client.app.state.document_storage
+
+        with storage.open(key=version.storage_key) as stored_file:
+            stored_content = stored_file.read()
+
+        assert stored_content == content
 
 
 def test_revoked_member_cannot_upload_pdf(auth_environment):
@@ -478,4 +525,43 @@ def test_upload_boundary_and_spoofed_identity_fields(auth_environment):
         assert response.status_code == 200
         assert response.json()["size_bytes"] == len(content)
         assert response.json()["tenant_id"] == str(tenant.id)
-        assert response.json()["user_id"] == str(user.id)
+
+def test_minio_failure_rolls_back_document(auth_environment):
+    _, session_factory, _ = auth_environment
+
+    storage = FailingStorage()
+
+    with session_factory() as session:
+        user, tenant = create_user_and_tenant(session)
+
+        # Keep fixture data committed within the test savepoint
+        session.commit()
+
+        with pytest.raises(RuntimeError, match="MinIO unavailable"):
+            persist_document_upload(
+                session=session,
+                storage=storage,
+                tenant_id=tenant.id,
+                user_id=user.id,
+                title="failure.pdf",
+                source=io.BytesIO(b"%PDF-1.7\nTest"),
+            )
+
+        documents = session.scalars(
+            select(Document).where(
+                Document.tenant_id == tenant.id
+            )
+        ).all()
+
+        versions = session.scalars(
+            select(DocumentVersion)
+            .join(Document, DocumentVersion.document_id == Document.id)
+            .where(Document.tenant_id == tenant.id)
+        ).all()
+
+        assert documents == []
+        assert versions == []
+        assert len(storage.deleted_keys) == 1
+
+        assert storage.save_attempted is True
+        assert len(storage.deleted_keys) == 1

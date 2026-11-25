@@ -32,6 +32,11 @@ class Document(Base):
             name="fk_documents_active_version",
             use_alter=True,
         ),
+        UniqueConstraint(
+            "tenant_id",
+            "id",
+            name="uq_documents_tenant_id_id",
+        ),
         Index("ix_documents_tenant_owner", "tenant_id", "owner_user_id"),
     )
 
@@ -81,6 +86,16 @@ class DocumentVersion(Base):
             "id",
             name="uq_document_versions_document_id_id",
         ),
+        CheckConstraint(
+            """
+            status <> 'READY'
+            OR (
+                storage_key IS NOT NULL
+                AND length(trim(storage_key)) > 0
+            )
+            """,
+            name="ck_document_versions_ready_storage_key",
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
@@ -91,4 +106,8 @@ class DocumentVersion(Base):
     version_number: Mapped[int] = mapped_column(nullable=False)
     status: Mapped[str] = mapped_column(
         String(20), nullable=False, server_default="PENDING"
+    )
+    storage_key: Mapped[str | None] = mapped_column(
+        String(1024),
+        nullable=True,
     )

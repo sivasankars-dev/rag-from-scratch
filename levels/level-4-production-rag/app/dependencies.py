@@ -9,3 +9,6 @@ def get_db_session(request: Request):
 
     with session_factory() as session:
         yield session
+
+def get_document_storage(request: Request):
+    return request.app.state.document_storage

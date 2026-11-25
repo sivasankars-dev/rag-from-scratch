@@ -31,3 +31,14 @@ def create_database_resources():
         yield engine, session_factory
     finally:
         engine.dispose()
+
+def create_claim_session_factory(engine):
+    """Dedicated claim sessions; override server defaults without changing other users.
+
+    The option engine shares the parent's pool. Disposing the parent engine is
+    sufficient; transaction isolation is reset when connections return to it.
+    """
+    return sessionmaker(
+        bind=engine.execution_options(isolation_level="READ COMMITTED"),
+        expire_on_commit=False,
+    )

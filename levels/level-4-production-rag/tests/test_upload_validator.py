@@ -18,6 +18,8 @@ from services.upload_validator import (
     validate_pdf_signature,
     validate_pdf_upload
 )
+from unittest.mock import Mock
+from app.dependencies import get_db_session, get_document_storage
 
 @pytest.mark.parametrize(
     "filename",
@@ -336,10 +338,26 @@ async def test_read_error_rewinds_without_hiding_failure(validator):
 def upload_app():
     app = FastAPI()
     app.include_router(documents.router)
-    principal = TenantPrincipal(user_id=uuid4(), tenant_id=uuid4())
-    app.dependency_overrides[get_current_tenant_member] = lambda: principal
-    return app, f"/tenants/{principal.tenant_id}/documents/upload"
 
+    principal = TenantPrincipal(
+        user_id=uuid4(),
+        tenant_id=uuid4(),
+    )
+
+    session = Mock()
+    storage = Mock()
+
+    app.dependency_overrides[get_current_tenant_member] = (
+        lambda: principal
+    )
+    app.dependency_overrides[get_db_session] = (
+        lambda: session
+    )
+    app.dependency_overrides[get_document_storage] = (
+        lambda: storage
+    )
+
+    return app, f"/tenants/{principal.tenant_id}/documents/upload"
 
 @pytest.fixture
 def spooled_files(monkeypatch):

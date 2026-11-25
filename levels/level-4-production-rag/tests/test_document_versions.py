@@ -158,11 +158,13 @@ def test_publish_document_version(db_session, document, status):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     v2 = DocumentVersion(
         document_id=document.id,
         version_number=2,
         status=status,
+        storage_key=(f"test/documents/{document.id}/versions/2/source.pdf" if status == "READY" else None),
     )
     db_session.add_all([v1, v2])
     db_session.flush()
@@ -200,8 +202,8 @@ def test_publish_document_version(db_session, document, status):
 
 
 def test_reads_only_the_published_version(db_session, document):
-    v1 = DocumentVersion(document_id=document.id, version_number=1, status="READY")
-    v2 = DocumentVersion(document_id=document.id, version_number=2, status="READY")
+    v1 = DocumentVersion(document_id=document.id, version_number=1, status="READY", storage_key=f"test/documents/{document.id}/versions/1/source.pdf")
+    v2 = DocumentVersion(document_id=document.id, version_number=2, status="READY", storage_key=f"test/documents/{document.id}/versions/2/source.pdf")
     db_session.add_all([v1, v2])
     db_session.flush()
 
@@ -239,6 +241,7 @@ def test_revoked_member_cannot_read_published_version(db_session, document):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -279,6 +282,7 @@ def test_deleted_document_has_no_readable_published_version(db_session, document
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -312,6 +316,7 @@ def test_disabled_owner_cannot_publish_version(db_session, document):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -339,6 +344,7 @@ def test_disabled_tenant_cannot_publish_version(db_session, document):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -367,6 +373,7 @@ def test_revoked_member_cannot_publish_version(db_session, document):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -413,6 +420,7 @@ def test_non_owner_cannot_publish_version(db_session, document):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -455,6 +463,7 @@ def test_cross_tenant_user_cannot_publish_version(db_session, document):
         document_id=document.id,
         version_number=1,
         status="READY",
+        storage_key=f"test/documents/{document.id}/versions/1/source.pdf",
     )
     db_session.add(version)
     db_session.flush()
@@ -500,12 +509,14 @@ def test_document_publication_stale_orm_read(two_session_factory):
                 document_id=doc1.id,
                 version_number=1,
                 status="READY",
+                storage_key=f"test/documents/{doc1.id}/versions/1/source.pdf",
             )
 
             version2 = DocumentVersion(
                 document_id=doc1.id,
                 version_number=2,
                 status="READY",
+                storage_key=f"test/documents/{doc1.id}/versions/2/source.pdf",
             )
 
             setup_session.add_all([version1, version2])
@@ -624,6 +635,7 @@ def test_published_version_visible_after_commit_in_new_session(
                 document_id=document_id,
                 version_number=1,
                 status="READY",
+                storage_key=f"test/documents/{document_id}/versions/1/source.pdf",
             )
             setup_session.add(version)
             setup_session.commit()
@@ -692,3 +704,22 @@ def test_published_version_visible_after_commit_in_new_session(
             )
 
             cleanup_session.commit()
+
+
+def test_ready_version_requires_storage_key(db_session, document):
+    version = DocumentVersion(
+        document_id=document.id,
+        version_number=1,
+        status="READY",
+        storage_key=None,
+    )
+
+    with pytest.raises(IntegrityError) as error:
+        with db_session.begin_nested():
+            db_session.add(version)
+            db_session.flush()
+
+    assert (
+        error.value.orig.diag.constraint_name
+        == "ck_document_versions_ready_storage_key"
+    )

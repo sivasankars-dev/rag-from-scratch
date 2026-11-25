@@ -14,12 +14,17 @@ from app.dependencies import get_db_session
 from app.routers.embedding import router as embedding_router
 from app.routers.auth import router as auth_router
 from app.routers.documents import router as documents_router
+from services.storage_factory import (
+    load_storage_settings,
+    create_document_storage,
+)
 
 logger = logging.getLogger("uvicorn.error")
 
 def create_app(
     embedding_service_factory=None,
     database_resources_factory=None,
+    document_storage_factory=None,
 ):
     @asynccontextmanager
     async def lifespan(app: FastAPI):
@@ -62,8 +67,18 @@ def create_app(
                     (time.perf_counter() - started) * 1000,
                 )
 
+                if document_storage_factory is None:
+                    storage_settings = load_storage_settings()
+                    storage = create_document_storage(storage_settings)
+                else:
+                    storage = document_storage_factory()
+
+                app.state.document_storage = storage
+
                 yield
+
             finally:
+                app.state.document_storage = None
                 app.state.embedding_service = None
                 app.state.session_factory = None
                 app.state.db_engine = None

@@ -1,5 +1,7 @@
 # 05 — Secure PDF Upload Validation
 
+> Historical validation-only checkpoint. Storage and keyed upload behavior now extend this endpoint; see [07 — Idempotent PDF Upload and Recovery](07-idempotent-upload-and-recovery.md) for the current response, persistence and recovery behavior. The original evidence below is retained.
+
 ## Scope and status
 
 **Level:** 4 — Production RAG
